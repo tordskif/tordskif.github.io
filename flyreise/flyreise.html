@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="flyreise.css">
+    <script src="flyreise.js"></script>
+</head>
+
+<body>
+    Fra:
+    <select id="fra">
+        <option>OSL</option>
+        <option>SVG</option>
+        <option>BGO</option>
+        <option>HAU</option>
+    </select> Til:
+    <select id="til">
+            <option>OSL</option>
+            <option>SVG</option>
+            <option>BGO</option>
+            <option>HAU</option>
+    </select><br>
+    <label>Antall<input type="number" id="antall"></label><br>
+    <label>Leiebil?<input type="checkbox" id="leiebil"></label>
+    <button id="button">Bestill</button>
+    <div id="out"></div>
+    <script>
+        setup();
+    </script>
+</body>
