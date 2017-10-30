@@ -6,6 +6,30 @@
     border: 2px solid black;
 }
 
+
+#size, #rota, #slidervalue, #color {
+    position: absolute;
+    top: 10px;
+}
+#size {
+    left: 4px;
+    width: 50px;
+    height: 20px;
+    font-size: 16px;
+}
+#rota {
+    left: 60px;
+    width: 100px;
+}
+#slidervalue {
+    left: 170px;
+    top: 14px;
+    font-size: 16px;
+}
+#color {
+    left: 200px;
+}
+
 #rektangel, #trekant, #sirkel, #visk {
     border: 2px solid black;
     position: absolute;
@@ -21,6 +45,12 @@
 
 #trekant {
     top: 150px;
+}
+
+#polygon {
+    width: 40px;
+    height: 30px;
+    font-size: 20px;
 }
 
 #sirkel {

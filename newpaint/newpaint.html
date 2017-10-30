@@ -10,10 +10,14 @@
 <body>
     <div id="main">
         <input id="size" type="number">
+        <input id="rota" type="range" min="0" max="180" value="0">
+        <div id="slidervalue">0</div>
         <input id="color" type="color">
         <canvas id="tegning" width="500" height="500"></canvas>
         <div id="rektangel" class="option">Rektangel</div>
-        <div id="trekant" class="option">Trekant</div>
+        <div id="trekant" class="option">Polygon
+            <input id="polygon" type="number">
+        </div>
         <div id="sirkel" class="option">Sirkel</div>
         <div id="visk" class="option">Visk</div>
         <div id="img"></div>
