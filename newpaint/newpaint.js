@@ -50,7 +50,6 @@ function setup() {
             }
         }
         if(counter > 250) {
-            console.log("hallo");
             img.style.visibility = "visible";
         }
     }
