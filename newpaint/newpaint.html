@@ -9,11 +9,12 @@
 
 <body>
     <div id="main">
-        <input id="size" type="number">
+        <input id="size" type="range" min="1" max="200" value="50">
         <input id="rota" type="range" min="0" max="180" value="0">
         <div id="slidervalue">0</div>
         <input id="color" type="color">
         <canvas id="tegning" width="500" height="500"></canvas>
+        <canvas id="preview" width="200" height="200"></canvas>
         <div id="rektangel" class="option">Rektangel</div>
         <div id="trekant" class="option">Polygon
             <input id="polygon" type="number">

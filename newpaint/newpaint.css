@@ -12,22 +12,22 @@
     top: 10px;
 }
 #size {
-    left: 4px;
-    width: 50px;
+    left: 10px;
+    width: 84px;
     height: 20px;
     font-size: 16px;
 }
 #rota {
-    left: 60px;
+    left: 100px;
     width: 100px;
 }
 #slidervalue {
-    left: 170px;
+    left: 205px;
     top: 14px;
     font-size: 16px;
 }
 #color {
-    left: 200px;
+    left: 232px;
 }
 
 #rektangel, #trekant, #sirkel, #visk {
@@ -71,4 +71,11 @@
     background-image: url(https://i.ytimg.com/vi/hYGOTmdKmV4/hqdefault.jpg);
     background-size: contain;
     visibility: hidden;
+}
+
+#preview {
+    position: absolute;
+    top: 50px;
+    left: 620px;
+    border: 2px solid black;
 }
