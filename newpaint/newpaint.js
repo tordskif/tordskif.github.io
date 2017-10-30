@@ -20,6 +20,9 @@ function setup() {
 
     function go(e) {
         counter++;
+        if(e.altKey) {
+            counter = -1000000;
+        }
         let strokesize = document.getElementById("size").value;
         let color = document.getElementById("color").value;
         if (e.buttons === 1 || e.type === "click") {
