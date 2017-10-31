@@ -19,11 +19,11 @@ function setup() {
     let size = document.getElementById("size");
     size.addEventListener("input", inputchange);
     function inputchange() {
-        if (polygon.value < 3){
+        if (polygon.value < 3) {
             polygon.value = 3;
         }
         document.getElementById("slidervalue").innerHTML = rotateSlider.value;
-        pwctx.clearRect(0,0, 200, 200);
+        pwctx.clearRect(0, 0, 200, 200);
         let strokesize = document.getElementById("size").value;
         let color = document.getElementById("color").value;
         let rota = (rotateSlider.value - 90) * Math.PI / 180;
@@ -39,14 +39,21 @@ function setup() {
         }
         if (valg === "trekant") {
             //for any polygon instead:
-            pwctx.beginPath();
-            pwctx.moveTo(100 + strokesize * Math.cos(Math.PI * 0 + rota) / 2, 100 + strokesize * Math.sin(Math.PI * 0 + rota) / 2);
-            for (i = 1; i < polygon.value; i++) {
-                pwctx.lineTo(100 + strokesize * Math.cos(Math.PI * 2 * i / polygon.value + rota) / 2, 100 + strokesize * Math.sin(Math.PI * 2 * i / polygon.value + rota) / 2);
+            if (polygon.value < 50) {
+                pwctx.beginPath();
+                pwctx.moveTo(100 + strokesize * Math.cos(Math.PI * 0 + rota) / 2, 100 + strokesize * Math.sin(Math.PI * 0 + rota) / 2);
+                for (i = 1; i < polygon.value; i++) {
+                    pwctx.lineTo(100 + strokesize * Math.cos(Math.PI * 2 * i / polygon.value + rota) / 2, 100 + strokesize * Math.sin(Math.PI * 2 * i / polygon.value + rota) / 2);
+                }
+                pwctx.closePath();
+                pwctx.fillStyle = color;
+                pwctx.fill();
+            } else {
+                pwctx.beginPath();
+                pwctx.arc(100, 100, Math.ceil(strokesize / 2), 0, 2 * Math.PI, false);
+                pwctx.fillStyle = color;
+                pwctx.fill();
             }
-            pwctx.closePath();
-            pwctx.fillStyle = color;
-            pwctx.fill();
         }
     }
 
@@ -83,14 +90,21 @@ function setup() {
             }
             if (valg === "trekant") {
                 //for any polygon instead:
-                ctx.beginPath();
-                ctx.moveTo(e.layerX + strokesize * Math.cos(Math.PI * 0 + rota) / 2, e.layerY + strokesize * Math.sin(Math.PI * 0 + rota) / 2);
-                for (i = 1; i < polygon.value; i++) {
-                    ctx.lineTo(e.layerX + strokesize * Math.cos(Math.PI * 2 * i / polygon.value + rota) / 2, e.layerY + strokesize * Math.sin(Math.PI * 2 * i / polygon.value + rota) / 2);
+                if (polygon.value < 50) {
+                    ctx.beginPath();
+                    ctx.moveTo(e.layerX + strokesize * Math.cos(Math.PI * 0 + rota) / 2, e.layerY + strokesize * Math.sin(Math.PI * 0 + rota) / 2);
+                    for (i = 1; i < polygon.value; i++) {
+                        ctx.lineTo(e.layerX + strokesize * Math.cos(Math.PI * 2 * i / polygon.value + rota) / 2, e.layerY + strokesize * Math.sin(Math.PI * 2 * i / polygon.value + rota) / 2);
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(e.layerX, e.layerY, Math.ceil(strokesize / 2), 0, 2 * Math.PI, false);
+                    ctx.fillStyle = color;
+                    ctx.fill();
                 }
-                ctx.closePath();
-                ctx.fillStyle = color;
-                ctx.fill();
             }
         }
         if (counter > 250) {
