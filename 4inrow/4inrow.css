@@ -1,0 +1,17 @@
+.tile {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: white;
+    z-index: 1;
+}
+#main {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 670px;
+    height: 590px;
+    background-color: #3B6AF3;
+    z-index: -1;
+}
