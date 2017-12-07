@@ -10,7 +10,7 @@ Will then end up with the result which minimizes the opponens score while maximi
 
 function setup() {
     if(localStorage.getItem("record") === null) {
-        localStorage.setItem("record") = "0,0";
+        localStorage.setItem("record", "0,0");
     }
     //localStorage.setItem("record", "0,0");
     let record = localStorage.getItem("record");
