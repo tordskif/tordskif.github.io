@@ -1,3 +1,25 @@
+/* 
+@startuml
+
+title While Loop - Activity Diagram 
+
+
+start
+
+while (Hungry?)  is (Yes)
+  :Eat Hot Wings;
+  :Drink Homebrew;
+endwhile (No)
+
+:Go To Sleep;
+
+stop
+
+@enduml
+ */
+
+
+
 function setup() {
     let main = document.getElementById("main");
     let julemann = document.getElementById("julemann");

@@ -260,7 +260,11 @@ function setup() {
                                     calcState6[n].push(calcTurn);
                                 }
                                 score[i][j][k][l][m][n] = calculateScore(calcState6, 3);
-                                for (let o = 0; 0 < 7; o++) {
+
+                                /*if (score[i][j][k][l][m][n] === 0) {
+                                    score[i][j][k][l][m][n] = []; //denne må jeg huske å ta med når jeg utvider
+                                }*/
+                                /*for (let o = 0; o < 7; o++) {
                                     if (typeof (score[i][j][k][l][m][n]) === "number") {
                                         break;
                                     }
@@ -281,15 +285,14 @@ function setup() {
                                         }
                                         score[i][j][k][l][m][n][o] = calculateScore(calcState8, 1);
                                     }
-                                }
-                                //score[i][j][k][l][m][n][o] will now either be -1, 0 or 1;
+                                }*/
                             }
                         }
                     }
                 }
             }
         }
-        for (let i = 0; i < 7; i++) {
+        /*for (let i = 0; i < 7; i++) {
             if (typeof (score[i]) === "number") {
                 continue;
             }
@@ -328,7 +331,7 @@ function setup() {
                     }
                 }
             }
-        }
+        }*/
         for (let i = 0; i < 7; i++) {
             if (typeof (score[i]) === "number") {
                 continue;
@@ -454,15 +457,18 @@ function setup() {
             //add a bit to incentivice going to middle in start, as that is generally good
             score[i] += (3 - Math.abs(3-i))/100000;
         }
+        console.log(clone(score))
         for (let i = 0; i < 7; i++) {
             let placement = score.indexOf(Math.max.apply(Math, score)); //if there are multiple with same value, maybe do a random choice between them
+            //console.log(score[placement]);
             if (gameBoard[placement].length < 6) {
                 placeTile(currentTurn, placement);
                 break;
             }
+            console.log(placement);
             score[placement] = -1000000000;
         }
-        //console.log(score);
+        console.log(score);
     }
 
     function calculateScore(board, factor) { //board is a boardstate array
