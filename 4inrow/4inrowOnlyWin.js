@@ -57,6 +57,7 @@ function setup() {
         }
     }
     main.addEventListener("click", clickOnColumn);
+    main.addEventListener("touch", clickOnColumn);
 
     function sleep(milliseconds) {
         var start = new Date().getTime();
