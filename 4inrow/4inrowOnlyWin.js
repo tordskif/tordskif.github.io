@@ -10,6 +10,7 @@ Will then end up with the result which minimizes the opponens score while maximi
 
 function setup() {   
     //localStorage.setItem("record", "0,0");
+    console.log("test");
     let record = localStorage.getItem("record");
     let gameState = 0;
     let gameBoard = [
