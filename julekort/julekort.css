@@ -1,0 +1,22 @@
+body {
+    overflow: hidden;
+}
+
+
+#julemann {
+    position: absolute;
+    left: 200px;
+    top: 100px;
+    width: 250px;
+    height: 100px;
+    background-color: red;
+}
+
+.present {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: green;
+    z-index: -1;
+    opacity: 1;
+}
