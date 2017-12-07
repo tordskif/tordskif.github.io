@@ -8,9 +8,8 @@ Go backwards, picking the highest score outcome when it is its turn, and the low
 Will then end up with the result which minimizes the opponens score while maximizing its score
 */
 
-function setup() {   
+function setup() {
     //localStorage.setItem("record", "0,0");
-    console.log("test");
     let record = localStorage.getItem("record");
     let gameState = 0;
     let gameBoard = [
@@ -64,6 +63,8 @@ function setup() {
             }
         }
     }
+    let recordDiv = document.getElementById("record");
+    recordDiv.innerHTML = "Red: " + record.split(",")[0] + " Yellow: " + record.split(",")[1];
 
     function clickOnColumn(e) {
         if (gameState === 1) {
@@ -127,9 +128,9 @@ function setup() {
                             } else {
                                 record[1] = parseFloat(record[1]) + 1;
                             }
+                            recordDiv.innerHTML = "Red: " + record[0] + " Yellow: " + record[1];
                             record = record[0] + "," + record[1];
                             localStorage.setItem("record", record);
-                            console.log(record);
                             return;
                         }
                     }
@@ -146,9 +147,9 @@ function setup() {
                             } else {
                                 record[1] = parseFloat(record[1]) + 1;
                             }
+                            recordDiv.innerHTML = "Red: " + record[0] + " Yellow: " + record[1];
                             record = record[0] + "," + record[1];
                             localStorage.setItem("record", record);
-                            console.log(record);
                             return;
                         }
                     }
@@ -165,9 +166,9 @@ function setup() {
                             } else {
                                 record[1] = parseFloat(record[1]) + 1;
                             }
+                            recordDiv.innerHTML = "Red: " + record[0] + " Yellow: " + record[1];
                             record = record[0] + "," + record[1];
                             localStorage.setItem("record", record);
-                            console.log(record);
                             return;
                         }
                     }
@@ -184,9 +185,9 @@ function setup() {
                             } else {
                                 record[1] = parseFloat(record[1]) + 1;
                             }
+                            recordDiv.innerHTML = "Red: " + record[0] + " Yellow: " + record[1];
                             record = record[0] + "," + record[1];
                             localStorage.setItem("record", record);
-                            console.log(record);
                             return;
                         }
                     }
@@ -496,7 +497,6 @@ function setup() {
             //add a bit to incentivice going to middle in start, as that is generally good
             score[i] += (3 - Math.abs(3-i))/100000;
         }
-        console.log(clone(score))
         for (let i = 0; i < 7; i++) {
             let placement = score.indexOf(Math.max.apply(Math, score)); //if there are multiple with same value, maybe do a random choice between them
             //console.log(score[placement]);
@@ -504,11 +504,8 @@ function setup() {
                 placeTile(currentTurn, placement);
                 break;
             }
-            console.log(placement);
             score[placement] = -1000000000;
         }
-        console.log(score);
-        console.log(record);
     }
 
     function calculateScore(board, factor) { //board is a boardstate array
@@ -612,6 +609,6 @@ function setup() {
         [],
         []
     ];
-    console.log(calculateScore(testboard, 1));
+    //console.log(calculateScore(testboard, 1));
 
 }

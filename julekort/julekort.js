@@ -18,8 +18,6 @@ stop
 @enduml
  */
 
-
-
 function setup() {
     let main = document.getElementById("main");
     let julemann = document.getElementById("julemann");
