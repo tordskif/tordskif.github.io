@@ -8,7 +8,9 @@ Go backwards, picking the highest score outcome when it is its turn, and the low
 Will then end up with the result which minimizes the opponens score while maximizing its score
 */
 
-function setup() {
+function setup() {   
+    localStorage.setItem("record", "0,0");
+    let record = localStorage.getItem("record");
     let gameState = 0;
     let gameBoard = [
         [], //collum 1
@@ -118,6 +120,15 @@ function setup() {
                             divBoard[i + 1][5 - j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 2][5 - j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 3][5 - j].style.filter = "hue-rotate(-60deg)";
+                            record = record.split(",")
+                            if(currentTurn === "red") {
+                                record[0] = parseFloat(record[0]) + 1;
+                            } else {
+                                record[1] = parseFloat(record[1]) + 1;
+                            }
+                            record = record[0] + "," + record[1];
+                            localStorage.setItem("record", record);
+                            console.log(record);
                             return;
                         }
                     }
@@ -128,6 +139,15 @@ function setup() {
                             divBoard[i + 1][5 - j - 1].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 2][5 - j - 2].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 3][5 - j - 3].style.filter = "hue-rotate(-60deg)";
+                            record = record.split(",")
+                            if(currentTurn === "red") {
+                                record[0] = parseFloat(record[0]) + 1;
+                            } else {
+                                record[1] = parseFloat(record[1]) + 1;
+                            }
+                            record = record[0] + "," + record[1];
+                            localStorage.setItem("record", record);
+                            console.log(record);
                             return;
                         }
                     }
@@ -138,6 +158,15 @@ function setup() {
                             divBoard[i][5 - j - 1].style.filter = "hue-rotate(-60deg)";
                             divBoard[i][5 - j - 2].style.filter = "hue-rotate(-60deg)";
                             divBoard[i][5 - j - 3].style.filter = "hue-rotate(-60deg)";
+                            record = record.split(",")
+                            if(currentTurn === "red") {
+                                record[0] = parseFloat(record[0]) + 1;
+                            } else {
+                                record[1] = parseFloat(record[1]) + 1;
+                            }
+                            record = record[0] + "," + record[1];
+                            localStorage.setItem("record", record);
+                            console.log(record);
                             return;
                         }
                     }
@@ -148,6 +177,15 @@ function setup() {
                             divBoard[i + 1][5 - j + 1].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 2][5 - j + 2].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 3][5 - j + 3].style.filter = "hue-rotate(-60deg)";
+                            record = record.split(",")
+                            if(currentTurn === "red") {
+                                record[0] = parseFloat(record[0]) + 1;
+                            } else {
+                                record[1] = parseFloat(record[1]) + 1;
+                            }
+                            record = record[0] + "," + record[1];
+                            localStorage.setItem("record", record);
+                            console.log(record);
                             return;
                         }
                     }
@@ -469,6 +507,7 @@ function setup() {
             score[placement] = -1000000000;
         }
         console.log(score);
+        console.log(record);
     }
 
     function calculateScore(board, factor) { //board is a boardstate array
