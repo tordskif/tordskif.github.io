@@ -10,6 +10,7 @@ body {
     width: 250px;
     height: 100px;
     background-color: red;
+    z-index: 2
 }
 
 .present {
@@ -19,4 +20,24 @@ body {
     background-color: green;
     z-index: -1;
     opacity: 1;
+}
+.present::after {
+    content: "x";
+    color: rgba(0, 0, 0, 0);
+    position: absolute;
+    left: 15px;
+    top: 0px;
+    width: 10px;
+    height: 40px;
+    background-color:  yellow;
+}
+.present::before {
+    content: "x";
+    color: rgba(0, 0, 0, 0);
+    position: absolute;
+    left: 0px;
+    top: 15px;
+    width: 40px;
+    height: 10px;
+    background-color:  yellow;
 }
