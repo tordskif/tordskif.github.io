@@ -190,7 +190,7 @@ function setup() {
 
     //holder kontroll på hvor musen er
     function cursormove(e) {
-        cursor.x = e.pageX - 202;
+        cursor.x = e.pageX - 152;
         cursor.y = e.pageY - 52;
     }
 
