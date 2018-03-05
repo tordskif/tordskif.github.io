@@ -1,0 +1,39 @@
+#fig1 {
+    position: absolute;
+    width: 112px;
+    height: 112px;
+    left: 0px;
+    top: 400px;
+    background-image: url("walkingpick.png");
+    background-position-x: 0px;
+    background-position-y: calc( -112px * 2 - 12px );
+    opacity: 1;
+    z-index: 2;
+    transition: transform 0.5s;
+}
+
+#main {
+    position: relative;
+    top: 20px;
+    left: 0px;
+}
+
+.boks {
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    z-index: -1;
+}
+
+#boks1 {
+    left: 860px;
+    top: 475px;
+}
+
+#boks2 {
+    left: 60px;
+    top: 38px;
+    opacity: 0;
+}

@@ -1,0 +1,16 @@
+@startuml
+:begin;
+:beregn pris;
+:beregn();
+if (test) then (yes)
+    :dostuff;
+else
+    :something else;
+    note right: Her er en note
+endif
+:end;
+while (i is alive)
+    :keep on living;
+endwhile
+:not live;
+@enduml

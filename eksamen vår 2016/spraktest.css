@@ -1,0 +1,8 @@
+#main {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    border: 2px solid black;
+    width: 600px;
+    height: 400px;
+}

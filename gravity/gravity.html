@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="gravity.css">
+    <title>gravity</title>
+    <script src="gravity.js"></script>
+</head>
+
+<body>
+    <div id="main">
+        <div id="playarea">
+            <div id="leaderboard">
+                <div id="tittel">
+                    <div>Navn</div>
+                    <div>Tid</div>
+                    <div>Vansklighet</div>
+                </div>
+                <div id="verdi">
+                </div>
+            </div>
+            <div id="startmenu">
+                <div id="inputs">
+                    <div id="gdiv">
+                        Gravity:<input type="range" class="slide" min="0" max="10" step="0.1" id="gslide" value="1">
+                        <div id="gval"></div>
+                    </div>
+                    <div id="kdiv">
+                        Pull:<input type="range" class="slide" min="0" max="10" step="0.1" id="kslide" value="1">
+                        <div id="kval"></div>
+                    </div>
+                    <div id="ddiv">
+                        Difficulty:<input type="range" class="slide" min="0" max="9" step="1" id="dslide" value="0">
+                        <div id="dval"></div>
+                    </div>
+                    <div id="playernamediv">Name: <input type="text" id="playername"></div>
+                    <button id="startbutton">Start</button>
+                </div>
+            </div>
+            <div id="box">
+                <div id="countdown"></div>
+                <div id="kule"></div>
+                <div id="tryagain">
+                    <div id="message"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        setup();
+    </script>
+</body>
+
+</html>

@@ -1,3 +1,49 @@
 body {
     overflow: hidden;
 }
+
+#inputField {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 600px;
+    height: 400px;
+    background-color: red;
+}
+#text {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    height: 300px;
+    width: 500px;
+    resize: none;
+}
+#inputDone {
+    position: absolute;
+    top: 460px;
+    left: 50px;
+    width: 100px;
+    height: 50px;
+    background-color: blue;
+}
+#dragOptions {
+    position: absolute;
+    top: 500px;
+    left: 700px;
+}
+#questionText {
+    position: absolute;
+    top: 30px;
+    left: 700px;
+    width: 400px;
+    font-size: 1.4em;
+}
+.drag {
+    font-size: 1.4em;
+    background-color: green;
+}
+.insertfield {
+    background-color: green;
+    height: 30px;
+    width: 40px;
+}

@@ -1,0 +1,12 @@
+#main {
+    background-color: red;
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+}
+
+input {
+    width: 40px;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bestilling.css">
+    <script src="bestilling.js"></script>
+</head>
+
+<body>
+    <div id="main">
+        By: <select name="byer" id="byer">
+            <option value="">Velg by...</option>
+            <option value="0">St. Petersburg</option>
+            <option value="1">Amsterdam</option>
+            <option value="2">New York</option>
+            <option value="3">Roma</option>
+
+        </select><br> 
+        Reiseperiode:<input type="radio" name="periode" value="sommer">Sommer<input type="radio" name="periode" value="vinter">Vinter<br>
+        Hotell:<select name="hotell" id="hotell">
+            <option value="">Velg Hotell...</option>
+
+            </select><br>
+        Antall Enkeltrom:<input type="number" id="enkel"><br>
+        Antall Dobbeltrom:<input type="number" id="dobbel"><br>
+        Kulturpass? <input type="checkbox" id="kultur"><br>
+        <button type="button" id="button">Bestill!</button>
+    </div>
+    <script>
+        setup();
+    </script>
+</body>
+
+</html>

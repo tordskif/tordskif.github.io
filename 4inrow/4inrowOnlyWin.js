@@ -511,9 +511,22 @@ function setup() {
             score[placement] = -1000000000;
         }
     }
+    /*
+    Here i can maybe use regular expression to look for patterns
+    Try to stitch together each of the columns (best to use 0s and 1s), and have a 2 determining row end
+    Look for a pattern where a 1 is followed by a 2 somewhere in the next 7,8 or 9 (skrå venstre, rett opp, skrå høyre), and then the 7,8 or 9 is also a 1.
+    This has to be repeated 3(4?) times. If this is true, a match is found. Have the same test just for 0 instead.
+    To find 4 in the same row, just look for 1111, and since lineshifts will have a 2, no more testing than that is needed
+    /1(\d{7,7}1){3,}|1(\d{6,6}1){3,}|1(\d{5,5}1){3,}/gm //this does the basic thing, not sure if sizes are corrct, have not added the 2 to show lineshift
+    How to use:
+    let regtest = /1(\d{7,7}1){3,}|1(\d{6,6}1){3,}|1(\d{5,5}1){3,}/gm
+    regtest.test("001000010001020100010020100100200") //something like this
+    Will return true or false
+    This method will prolly be WAY more efficient than the old one
+    */
 
     function calculateScore(board, factor) { //board is a boardstate array
-        for (let b = 5; b >= 0; b--) { //does 3 to 0 work?
+        for (let b = 5; b >= 0; b--) {
             for (let a = 0; a < 7; a++) {
                 if (board[a][b] === "yellow") { //have found yellow piece
                     if (board[a + 3] !== undefined && board[a + 3][b] === "yellow" && board[a + 2][b] === "yellow" && board[a + 1][b] === "yellow") {

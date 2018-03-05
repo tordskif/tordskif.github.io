@@ -1,0 +1,149 @@
+#kule {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+}
+
+#startmenu {
+    width: 800px;
+    height: 500px;
+    border: 2px solid black;
+    top: 50px;
+    left: 150px;
+    position: absolute;
+}
+
+#box {
+    width: 800px;
+    height: 500px;
+    border: 2px solid black;
+    top: 50px;
+    left: 150px;
+    position: absolute;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+#playarea {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 1600px;
+    height: 1000px;
+}
+
+body {
+    overflow: hidden;
+    font-size: 20px;
+}
+
+#gdiv, #kdiv, #ddiv, #cbdiv {
+    position: absolute;
+    left: 100px;
+    width: 50px;
+}
+
+#kdiv {
+    top: 40px;
+}
+
+#gdiv {
+    top: 140px;
+}
+
+#ddiv {
+    top: 240px;
+}
+
+#sliders {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+}
+
+#startbutton {
+    width: 200px;
+    height: 100px;
+    position: absolute;
+    left: 300px;
+    top: 300px;
+    font-size: 40px;
+}
+
+#countdown {
+    position: absolute;
+    left: 200px;
+    top: 140px;
+    font-size: 200px;
+    width: 400px;
+    text-align: center;
+    /*slik at du ikke kan markere teksten*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#tryagain {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 800px;
+    height: 500px;
+    visibility: hidden;
+}
+
+#message {
+    position: absolute;
+    text-align: center;
+    width: 800px;
+    top: 400px;
+    font-size: 50px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#playernamediv {
+    position: absolute;
+    top: 40px;
+    left: 300px;
+}
+
+#playername {
+    width: 150px;
+    height: 30px;
+    font-size: 24px;
+}
+
+#leaderboard {
+    position: absolute;
+    top: 50px;
+    left: 1000px;
+    width: 300px;
+    height: 500px;
+    border: 2px solid black;
+}
+
+#tittel, #verdi {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.ball {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: blue;
+    left: 0;
+    top: 0;
+    opacity: 0.6;
+}

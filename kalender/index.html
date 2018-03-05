@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="kalender.css">
+    <title>kalender</title>
+    <script src="kalender.js"></script>
+</head>
+
+<body>
+    <div id="main">
+        <!-- buttons -->
+        <div id="kalender">
+            <div id="navigation">
+                <div class="navigate">
+                    <button type="button" class="mybutton" data-command="year--"> &lt; </button>
+                    <span id="year">2015</span>
+                    <button type="button" class="mybutton" data-command="year++"> &gt; </button>
+                </div>
+                <div class="navigate">
+                    <button type="button" class="mybutton" data-command="month--"> &lt; </button>
+                    <span id="month">oktober</span>
+                    <button type="button" class="mybutton" data-command="month++"> &gt; </button>
+                </div>
+            </div>
+            <div id="moonbox">
+                <div id="ukedager"></div>
+                <div id="datoer"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        setup();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+#kalender {
+    border: 2px solid black;
+    width: 20em;
+    height: 15em;
+    text-align: center;
+}
+
+#kalender button {
+    background-color: salmon;
+    width: 2em;
+    height: 1.8em;
+    border: 2px solid black;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px grey;
+}
+
+#kalender div span {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#month {
+    width: 4em;
+}
+
+div.navigate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#ukedager, #datoer {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border: 2px solid black;
+}
+
+.hidden {
+    opacity: 0;
+}

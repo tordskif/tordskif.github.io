@@ -1,0 +1,39 @@
+#fig {
+    position: absolute;
+    width: 112px;
+    height: 112px;
+    left: 0px;
+    top: 0px;
+    background-image: url("spritesheet.png");
+    background-position-x: 0;
+    background-position-y: calc( -112px * 1 );
+    animation: movement 9s linear infinite, legs 0.7s steps(8) infinite;
+    opacity: 1;
+    border-radius: 50%;
+}
+
+#main {
+    position: relative;
+    top: 20px;
+    left: 0px;
+}
+
+#boks {
+    position: absolute;
+    left: 900px;
+    top: 350px;
+    background-color: red;
+    width: 50px;
+    height: 50px;
+}
+
+@keyframes legs {
+    100% { background-position-x: -894px;}    
+}
+@keyframes movement {
+    70% { transform: rotate(0deg) scale(2);}
+    80% { transform: rotate(180deg) scale(2.25);background-color: yellow;}
+    89.9% { opacity: 1;}
+    90% { left: 900px; top: 300px; opacity: 0; transform: scale(2.5) rotate(-360deg);}
+    100% { background-color: red;}
+}

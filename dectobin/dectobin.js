@@ -25,11 +25,12 @@ function setup() {
 
 function lesTall(s, base) {
     let sum = 0;
-    for (let i = 0; i < s.length; i++) {
+    for (let i = 0; i <= s.length; i++) {
         let c = s.charCodeAt(i) - 48;
         if (c > 9) {
             c = s.charCodeAt(i) - 55;
         }
+        console.log(c);
         sum *= base;
         sum += c;
     }
