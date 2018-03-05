@@ -117,6 +117,7 @@ function setup() {
         records.push(newRecord);
         //sorterer bare på tid, kunne sortert på vansklighet også, og derreter tid(om flere har samme vansklighet)
         records.sort(compare);
+        console.log(records.sort(compare));
         leaderBoardVerdi.innerHTML = "";
         for (let r of records) {
             let nameDiv = document.createElement("div");
