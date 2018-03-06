@@ -134,10 +134,10 @@ function setup() {
 
     //leaderboard sortering
     function compare(a, b) {
-        if (a.time < b.time) {
+        if (Number(a.time) < Number(b.time)) {
             return 1;
         }
-        if (a.time > b.time) {
+        if (Number(a.time) > Number(b.time)) {
             return -1;
         }
         return 0;
