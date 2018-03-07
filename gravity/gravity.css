@@ -32,6 +32,13 @@
     left: 0px;
     width: 1600px;
     height: 1000px;
+    /*slik at du ikke kan markere teksten*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 body {
@@ -79,13 +86,6 @@ body {
     font-size: 200px;
     width: 400px;
     text-align: center;
-    /*slik at du ikke kan markere teksten*/
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 
 #tryagain {
@@ -103,12 +103,6 @@ body {
     width: 800px;
     top: 400px;
     font-size: 50px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 
 #playernamediv {
@@ -130,6 +124,9 @@ body {
     width: 300px;
     height: 500px;
     border: 2px solid black;
+    overflow: hidden;
+    font-size: 24px;
+    text-align: center;
 }
 
 #tittel, #verdi {
@@ -139,11 +136,8 @@ body {
 
 .ball {
     position: absolute;
-    width: 40px;
-    height: 40px;
     border-radius: 50%;
-    background-color: blue;
     left: 0;
     top: 0;
-    opacity: 0.6;
+    opacity: 1;
 }

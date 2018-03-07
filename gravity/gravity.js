@@ -1,9 +1,10 @@
 class sprite {
-    constructor(x, y, vx, vy, div) {
+    constructor(x, y, vx, vy, r, div) {
         this.x = x;
         this.y = y;
         this.vx = vx;
         this.vy = vy;
+        this.r = r;
         this.div = div;
     }
 
@@ -25,6 +26,13 @@ class record {
 }
 
 //teller bevegelse av sprites som en form for animasjon?
+
+/*
+ Ideas: Mer variasjon, gi ballene ulik størrelse, farge etc. Gi en liten startfart nedover slik at g = 0
+ fortsatt får ballene til å gå nedover
+ Powerups? (invurnability, extra life/shield, multiball(have 3(or get 2 more) balls at once trying to survive, as long as any survive you're in the game))
+ More balls as game progresses
+ */
 
 
 function setup() {
@@ -55,7 +63,7 @@ function setup() {
     let k; //fjærkonstant
     let d; //difficulty
 
-    let kule = new sprite(0, 0, 0, 0, kuleDiv);
+    let kule = new sprite(0, 0, 0, 0, 10, kuleDiv);
 
     let cursor = {
         x: 0,
@@ -78,7 +86,7 @@ function setup() {
         startmenu.style.visibility = "hidden";
         currentPlayer = playerName.value;
         if (!currentPlayer) {
-            currentPlayer = "Anonym";
+            currentPlayer = "Anonymus";
         }
         kule.x = 400;
         kule.y = 300;
@@ -153,6 +161,9 @@ function setup() {
         kuleDiv.style.opacity = 1;
         ballCount = 0;
         countDownGoing = false;
+        for (let b of manyBalls) {
+            b.div.remove();
+        }
         manyBalls = [];
     }
 
@@ -181,7 +192,7 @@ function setup() {
         kval.innerHTML = kslide.value;
         k = kslide.valueAsNumber / 100;
         gval.innerHTML = gslide.value;
-        g = gslide.valueAsNumber;
+        g = gslide.valueAsNumber / 2;
         dval.innerHTML = dslide.valueAsNumber + 1;
         d = dslide.valueAsNumber;
     }
@@ -191,11 +202,13 @@ function setup() {
 
     //holder kontroll på hvor musen er
     function cursormove(e) {
+        //152 og 52 er avstanden til boksen fra kanten + 2px border
         cursor.x = e.pageX - 152;
         cursor.y = e.pageY - 52;
     }
 
-    setInterval(gameEngine, 40);
+    setInterval(gameEngine, 30);
+    //faster interval makes game look smoother
 
     let ballCount = 0;
     let manyBalls = [];
@@ -204,8 +217,8 @@ function setup() {
     function gameEngine() {
         //move ball around
         kule.vy += g;
-        let xdist = kule.x - cursor.x + 10;
-        let ydist = kule.y - cursor.y + 10;
+        let xdist = kule.x - cursor.x + kule.r;
+        let ydist = kule.y - cursor.y + kule.r;
 
         kule.vy += -ydist * k;
         kule.vx += -xdist * k;
@@ -215,8 +228,8 @@ function setup() {
         kule.vx *= 0.98;
         kule.vy *= 0.98;
 
-        if (kule.x > 800 - 20) {
-            kule.x = 800 - 20;
+        if (kule.x > 800 - 2 * kule.r) {
+            kule.x = 800 - 2 * kule.r;
             kule.vx = -kule.vx;
             kule.vy *= 0.97;
         }
@@ -225,8 +238,8 @@ function setup() {
             kule.vx = -kule.vx;
             kule.vy *= 0.97;
         }
-        if (kule.y > 500 - 20) {
-            kule.y = 500 - 20;
+        if (kule.y > 500 - 2 * kule.r) {
+            kule.y = 500 - 2 * kule.r;
             kule.vy = -kule.vy;
             kule.vx *= 0.97;
         }
@@ -243,6 +256,7 @@ function setup() {
         //create balls to dodge
 
         //teller hvor ofte en ball skal komme
+        let colorArr = "123456789abcdef".split("");
         if (gameGoing) {
             ballCount++;
         }
@@ -250,13 +264,23 @@ function setup() {
             let newBall = document.createElement("div");
             //random posisjon fra 0 til 760;
             let x = Math.ceil(Math.random() * 760);
-            //random fart fra -10 til +10;
-            let vx = Math.ceil(Math.random() * 21) - 11;
+            //random fart fra -5 til +5;
+            let vx = Math.ceil(Math.random() * 11) - 6;
+            //random yfart fra 1 til 5
+            let vy = Math.ceil(Math.random() * 5);
+            //random radius fra 10 til 30;
+            let r = Math.ceil(Math.random() * 21) + 9;
+            //vil ikke ha for lyse farger, så ganger bare med 12, slik at de ikke blander seg med bakgrunnen
+            let color = colorArr[Math.floor(Math.random() * 12)] + colorArr[Math.floor(Math.random() * 12)] + colorArr[Math.floor(Math.random() * 12)];
             newBall.className = "ball";
             newBall.style.left = x + "px";
-            newBall.style.top = "10px";
+            newBall.style.top = "0px";
+            newBall.style.width = r * 2 + "px";
+            newBall.style.height = r * 2 + "px";
+            newBall.style.backgroundColor = "#" + color;
             box.appendChild(newBall);
-            let ballSprite = new sprite(x, 10, vx, 0, newBall);
+            //y = -2r makes it so that sprites spawn out of border
+            let ballSprite = new sprite(x, -2*r, vx, vy, r, newBall);
             manyBalls.push(ballSprite);
             ballCount = 0;
         }
@@ -264,14 +288,13 @@ function setup() {
         for (let b of manyBalls) {
             b.vy += g;
             b.flytt();
-            //ballen har falt ned under skjermen, trenger bare å bruke shift(), fordi ballen som faller ut vil alltid være den første i arrayen
-            if (b.y > 800) {
+            if (b.y > 800 || b.x < -200 || b.x > 800) {
                 b.div.remove();
-                manyBalls.shift();
+                manyBalls.splice(manyBalls.indexOf(b), 1);
             }
-            let collisionX = b.x - kule.x + 10;
-            let collisionY = b.y - kule.y + 10;
-            if (Math.sqrt(collisionX * collisionX + collisionY * collisionY) <= 30 && gameGoing) {
+            let collisionX = (b.x + b.r) - (kule.x + kule.r);
+            let collisionY = (b.y + b.r) - (kule.y + kule.r);
+            if (Math.sqrt(collisionX * collisionX + collisionY * collisionY) <= (b.r + kule.r) && gameGoing) {
                 die();
             }
         }
