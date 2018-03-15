@@ -15,7 +15,19 @@ class sprite {
         this.div.style.top = this.y + "px";
     }
 }
+
+class fallball extends sprite {
+    /*constructor(x, y, vx, vy, r, div) {
+        // må lage den vanlige tingen først
+        super(x, y, vx, vy, r, div);
+    }*/
+    //eller trenger jeg å gjøre det?, ser ut som det funker når fallball ikke skal ha noen nye egenskaper
+    ballDie() {
+        this.div.remove();
+    }
+}
 //kan lage subclass av sprite for fallball, kan ha en die() funksjon
+//om jeg skal ha powerup for å få flere baller, kan egentlig alle sprites ha ballDie() funksjonen
 
 class record {
     constructor(name, time, d) {
@@ -32,6 +44,9 @@ class record {
  fortsatt får ballene til å gå nedover
  Powerups? (invurnability, extra life/shield, multiball(have 3(or get 2 more) balls at once trying to survive, as long as any survive you're in the game))
  More balls as game progresses
+
+
+ Preset options, for example 0 gravity, 1 pull, 8 diff
  */
 
 
@@ -280,7 +295,7 @@ function setup() {
             newBall.style.backgroundColor = "#" + color;
             box.appendChild(newBall);
             //y = -2r makes it so that sprites spawn out of border
-            let ballSprite = new sprite(x, -2*r, vx, vy, r, newBall);
+            let ballSprite = new fallball(x, -2 * r, vx, vy, r, newBall);
             manyBalls.push(ballSprite);
             ballCount = 0;
         }
@@ -289,7 +304,7 @@ function setup() {
             b.vy += g;
             b.flytt();
             if (b.y > 800 || b.x < -200 || b.x > 800) {
-                b.div.remove();
+                b.ballDie();
                 manyBalls.splice(manyBalls.indexOf(b), 1);
             }
             let collisionX = (b.x + b.r) - (kule.x + kule.r);
