@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="valg.css">
+    <title>valg</title>
+    <script src="valg.js"></script>
+</head>
+
+<body>
+    <div id="main">
+        <label>Rødt<input type="number" class="partiinput" data-blokk = "andre"></label><br>
+        <label>SV<input type="number" class="partiinput" data-blokk = "rg"></label><br>
+        <label>AP<input type="number" class="partiinput" data-blokk = "rg"></label><br>
+        <label>SP<input type="number" class="partiinput" data-blokk = "rg"></label><br>
+        <label>Mdg<input type="number" class="partiinput" data-blokk = "andre"></label><br>
+        <label>Krf<input type="number" class="partiinput" data-blokk = "borg"></label><br>
+        <label>V<input type="number" class="partiinput" data-blokk = "borg"></label><br>
+        <label>H<input type="number" class="partiinput" data-blokk = "borg"></label><br>
+        <label>Djevelen sjølv(FRP)<input type="number" class="partiinput" data-blokk = "borg"></label><br>
+        <button id="kalkuler">Kalk</button><br>
+        <div id="output"></div>
+    </div>
+    <div id="soylediv">
+        <div id="borgsoyle"></div>
+        <div id="rgsoyle"></div>
+        <div id="andresoyle"></div>
+    </div>
+    <script>
+        setup();
+    </script>
+</body>
+
+</html>

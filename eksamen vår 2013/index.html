@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="eks.css">
+    <title>eks</title>
+    <script src="eks.js"></script>
+</head>
+
+<body>
+    <div id="main">
+        <h2>Tabell over energi og næringsinnhald</h2>
+        <table id="table">
+            <!--very tungvint måte å laga det på-->
+            <tr>
+                <td>Matvare</td>
+                <td>Kcal</td>
+                <td>Protein (i gram)</td>
+                <td>Fett (i gram)</td>
+                <td>Karbohydrater (i gram)</td>
+            </tr>
+            <tr>
+                <td>Lettmelk (1 glass på 2 dl)</td>
+                <td>92</td>
+                <td>6.6</td>
+                <td>3</td>
+                <td>9.6</td>
+            </tr>
+            <tr>
+                <td>1 egg</td>
+                <td>80</td>
+                <td>6.9</td>
+                <td>5.5</td>
+                <td>0.7</td>
+            </tr>
+            <tr>
+                <td>Grovbrød (1 skive = 40g)</td>
+                <td>103</td>
+                <td>3.5</td>
+                <td>1</td>
+                <td>19.6</td>
+            </tr>
+            <tr>
+                <td>Smør (til 1 brødskive)</td>
+                <td>36</td>
+                <td>0.025</td>
+                <td>4.1</td>
+                <td>0.025</td>
+            </tr>
+            <tr>
+                <td>Gulost (1 skive)</td>
+                <td>53</td>
+                <td>4</td>
+                <td>4.2</td>
+                <td>0</td>
+            </tr>
+        </table>
+        <h3>Legg til din fantastiske mat</h3>
+        <div id="inputs">
+            <label>Glass Lettmelk:<input id="melk" type="number"></label><br>
+            <label>Egg:<input id="egg" type="number"></label><br>
+            <label>Brødskiver:<input id="brod" type="number"></label><br>
+            <label>Smørporsjoner:<input id="smor" type="number"></label><br>
+            <label>Gulostskiver:<input id="ost" type="number"></label><br>
+        </div>
+        <button type="button" id="beregn">Beregn!</button>
+        <div id="soyletittel">Se fordelingen av energien her!</div>
+        <div id="soyler">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div id="output"></div>
+    </div>
+    <script>
+        setup();
+    </script>
+</body>
+
+</html>

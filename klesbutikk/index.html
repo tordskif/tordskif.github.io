@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="klesbutikk.css">
+    <title>klesbutikk</title>
+    <script src="klesbutikk.js"></script>
+</head>
+
+<body>
+    <div id="main">
+        <div id="klesinputs">
+            <label>Sokk(49,-) <input type="number" id="sokk"></label><br>
+            <label>Bukse(249,-) <input type="number" id="bukse"></label><br>
+            <label>Lue(1472,-) <input type="number" id="lue"></label><br>
+        </div>
+        <button type="button" id="kjop">Kjøp og Betal</button>
+        <div id="myModal" class="modal">
+            <div id="modal-text">
+            </div>
+            <div id="extra">
+                <input type="radio" name="extra" value="no" checked>Nei<br>
+                <input type="radio" name="extra" value="sokk">Sokk(25,-)<br>
+                <input type="radio" name="extra" value="bukse">Bukse(125,-)<br>
+                <input type="radio" name="extra" value="lue">Lue(736,-)<br>
+            </div>
+        </div>
+    </div>
+    <script>
+        setup();
+    </script>
+</body>
+
+</html>

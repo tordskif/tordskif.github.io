@@ -1,0 +1,57 @@
+td {
+    border: 1px solid black;
+}
+
+input {
+    width: 40px;
+    position: absolute;
+    left: 140px;
+}
+
+body {
+    font-size: 20px;
+}
+
+#soyletittel {
+    position: absolute;
+    left: 320px;
+    bottom: 260px;
+}
+
+#soyler {
+    position: absolute;
+    bottom: 50px;
+    left: 250px;
+    width: 400px;
+    height: 200px;
+    border: 2px solid black;
+}
+
+#soyler > div {
+    color: white;
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+    width: 80px;
+    height: 0px;
+}
+#soyler > div:nth-child(1) {
+    left: 0px;
+    background-color: red;
+}
+#soyler > div:nth-child(2) {
+    left: 80px;
+    background-color: blue;
+}
+#soyler > div:nth-child(3) {
+    left: 160px;
+    background-color: green;
+}
+#soyler > div:nth-child(4) {
+    left: 240px;
+    background-color: orange;
+}
+#soyler > div:nth-child(5) {
+    left: 320px;
+    background-color: purple;
+}

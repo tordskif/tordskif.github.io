@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="vindmolle.css">
+    <title>vindmolle</title>
+    <script src="vindmolle.js"></script>
+</head>
+
+<body>
+    <div id="main">
+    </div>
+    <script>
+        function kraft(vind) {
+            if(vind > 2.5) {
+                return 0;
+            }
+            return 2;
+        }
+        let simon = false;
+        let focused = false;
+        expect(kraft,0).to.be(0);
+        expect(simon).to.be(focused);
+        Test.summary("#main");
+    </script>
+</body>
+
+</html>
