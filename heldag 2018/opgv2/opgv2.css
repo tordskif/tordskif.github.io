@@ -1,0 +1,76 @@
+#bilde {
+    height: 400px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+body {
+    font-size: 20px;
+    overflow: hidden;
+}
+
+li {
+    width: 680px;
+}
+
+#sjekk {
+    display: none;
+}
+
+#animasjon {
+    position: absolute;
+    width: 800px;
+    height: 600px;
+    top: 10px;
+    left: 10px;
+    border: 2px solid black;
+}
+
+#animtekst {
+    position: absolute;
+    text-align: center;
+    left: 160px;
+    top: 250px;
+    animation: fade 2.5s linear 1 forwards;
+}
+
+#animbilde {
+    position: absolute;
+    height: 550px;
+    width: 700px;
+    top: 50px;
+    left: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;   
+}
+#pil {
+    background-image: url("../mediafiler/animasjon/bilde2.png");
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: slidein 2s linear 7.5s 1 forwards;
+    z-index: 3;
+    top: 483px;
+    left: 20000px;
+}
+
+#testresultater {
+    position: absolute;
+    top: 20px;
+    left: 850px;
+}
+
+@keyframes fade {
+    70% {left: 160px; top: 250px; transform: rotate(0deg)}
+    99.99% {left: -700px; top: -500px; transform: rotate(-1080deg)}
+    100% {left: 220px; top: 20px; transform: rotate(0deg)}
+}
+
+@keyframes slidein {
+    0% { left:400px; }
+    80% { left:105px;}
+    99.99% { opacity: 1; left:105px;}
+    100% { opacity: 0; left:105px;}
+}

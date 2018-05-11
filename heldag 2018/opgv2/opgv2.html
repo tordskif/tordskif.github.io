@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="opgv2.css">
+    <title>opgv2</title>
+    <script src="opgv2.js"></script>
+    <script src="test.js"></script>
+</head>
+
+<body>
+    <div id="main">
+        <div id="bilde"></div>
+        <div id="animasjon">
+            <div id="animtekst"></div>
+            <div id="animbilde"></div>
+            <div id="pil"></div>
+        </div>
+        <ul id="alternativer"></ul>
+        <button id="sjekk">Sjekk</button>
+        <div id="tilbakemelding"></div>
+        <div id="testresultater">
+            <h3>Testing</h3>
+            Ingen av funksjonene brukt har parametere eller return-verdier, så å teste en funksjon i seg selv er ikke så lett.
+            Kan derimot lage en plan for hvordan teste om funksjonaliteten er som den skal. (Og da gjøre manuelle sjekker for disse)<br>
+            Er rekkefølgen tilfeldig hver gang? <br>
+            Får en bare hvert sprørsmål en gang? <br>
+            Får en rett spørsmål til rett bilder?<br>
+            Blir poengsum og feil/rett svar kalkulert rett?<br>
+            Går noe galt om en ikke krysser av noe? (annet enn feil svar) <br>
+            At rett/gale svar blir markert riktig i oppsummeringen<br>
+            Ut ifra testingen virker det som om alt funker som det skal<br>
+            Har laget en funksjon som muligens kunne vært brukt til å kalkulere poeng, men som ikke brukes, og kan da sjekke om den fungerer: <br>
+            beregnPoeng(antRett, antFeil)
+            
+        </div>
+        <script>
+            function beregnPoeng(rett, feil) {
+                return 2*rett -1*feil;
+            }
+            expect(beregnPoeng, 4, 2).to.be(6);
+            expect(beregnPoeng, 1, 4).to.be(0);
+            expect(beregnPoeng, 1, 4).to.be(-2);
+            Test.summary("#testresultater");
+        </script>
+    </div>
+    <script>
+                setup();
+    </script>
+</body>
+
+</html>

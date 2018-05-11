@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="opgv1.css">
+    <title>opgv1</title>
+    <script src="opgv1.js"></script>
+</head>
+
+<body>
+    <div id="main">
+        <h3>Koble sammen svar og bilde med å trykke på en så det andre!</h3>
+        <div id="bilder">
+            <img src="../mediafiler/images/image5.png" data-svar="0">
+            <img src="../mediafiler/images/image6.png" data-svar="1">
+            <img src="../mediafiler/images/image8.png" data-svar="2">
+        </div>
+        <div id="tekster">
+            <div data-svar="0" data-start="0">Bussen må stoppe</div>
+            <div data-svar="2" data-start="1">Bilen kan kjøre</div>
+            <div data-svar="1" data-start="2">Bussen kan kjøre</div>
+        </div>
+        <button id="sjekk">Sjekk svar</button>
+        <div id="tilbakemelding"></div>
+    </div>
+    <script>
+        setup();
+    </script>
+</body>
+
+</html>

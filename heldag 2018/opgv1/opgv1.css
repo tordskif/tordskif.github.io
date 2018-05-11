@@ -1,0 +1,33 @@
+#bilder > img {
+    width: 400px;
+    background-size: contain;
+}
+
+body {
+    font-size: 20px;
+}
+
+#tekster > div {
+    position: absolute;
+    top: 400px;
+}
+
+#tekster > div:nth-child(1) {
+    left: 50px;
+}
+#tekster > div:nth-child(2) {
+    left: 530px;
+}
+#tekster > div:nth-child(3) {
+    left: 1010px;
+}
+
+#sjekk {
+    position: absolute;
+    top: 500px;
+}
+
+#tilbakemelding {
+    position: absolute;
+    top: 550px;
+}

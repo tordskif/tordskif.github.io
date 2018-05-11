@@ -139,8 +139,7 @@ function setup() {
         let newRecord = new record(currentPlayer, (surviveTime / 10).toFixed(1), d + 1);
         records.push(newRecord);
         //sorterer bare på tid, kunne sortert på vansklighet også, og derreter tid(om flere har samme vansklighet)
-        records.sort(a);
-        console.log(records.sort(compare));
+        records.sort(compare);
         leaderBoardVerdi.innerHTML = "";
         for (let r of records) {
             let nameDiv = document.createElement("div");
@@ -208,7 +207,7 @@ function setup() {
         k = kslide.valueAsNumber / 100;
         gval.innerHTML = gslide.value;
         g = gslide.valueAsNumber / 2;
-        dval.innerHTML = dslide.valueAsNumber + 1;
+        dval.innerHTML = dslide.valueAsNumber;
         d = dslide.valueAsNumber;
     }
     inputChange();
@@ -275,7 +274,7 @@ function setup() {
         if (gameGoing) {
             ballCount++;
         }
-        if (ballCount >= 10 - d) {
+        if (ballCount >= 10 / d) {
             let newBall = document.createElement("div");
             //random posisjon fra 0 til 760;
             let x = Math.ceil(Math.random() * 760);
