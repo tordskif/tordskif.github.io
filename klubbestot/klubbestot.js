@@ -166,4 +166,5 @@ function setup() {
     function pyt(a, b) {
         return Math.sqrt(a * a + b * b);
     }
+    //hei
 }
