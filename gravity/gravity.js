@@ -136,7 +136,7 @@ function setup() {
         tryAgainDiv.style.visibility = "visible";
         message.innerHTML = "Klikk for å prøve igjen!";
         //prøve å store records i localstorage
-        let newRecord = new record(currentPlayer, (surviveTime / 10).toFixed(1), d + 1);
+        let newRecord = new record(currentPlayer, (surviveTime / 10).toFixed(1), d);
         records.push(newRecord);
         //sorterer bare på tid, kunne sortert på vansklighet også, og derreter tid(om flere har samme vansklighet)
         records.sort(compare);
