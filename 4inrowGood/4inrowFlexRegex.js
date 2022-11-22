@@ -56,6 +56,9 @@ function setup() {
     //Function to actually make a move. gameBoard is current board, column is which column to do the move, and turn is which player is making this move
     function insert(gameBoard, column, turn) {
         let s = gameBoard.split("3");
+        if (s[column][5] != "0") { //This means the collumn is full, cant do placement. Return false
+            return false
+        }
         s[column] = s[column].replace("0", turn);
         return s.join("3");
     }
@@ -121,7 +124,7 @@ function setup() {
                 }
             }
         }
-        console.log(gameBoard)
+        //console.log(gameBoard)
     }
 
     //Update visuals and gamestate after a player has won
@@ -250,9 +253,14 @@ function setup() {
             value = Number.NEGATIVE_INFINITY
             moveList = [0, 0, 0, 0, 0, 0, 0]
             for (let i = 0; i < 7; i++) {
+                let boardEval = -2
                 let newBoard = insert(gameBoard, i, turn)
-                let boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
-                moveList[i] = boardEval
+                if(newBoard === false) { //If column is full, disincentivize. Also stops recusion early, should speed up
+                    moveList[i] = -2
+                } else {
+                    boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
+                    moveList[i] = boardEval
+                }
                 value = Math.max(boardEval, value)
                 if (value >= beta) {
                     break
@@ -265,9 +273,15 @@ function setup() {
             value = Number.POSITIVE_INFINITY
             moveList = [0, 0, 0, 0, 0, 0, 0]
             for (let i = 0; i < 7; i++) {
+                let boardEval = 2
                 let newBoard = insert(gameBoard, i, turn)
-                let boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
-                moveList[i] = boardEval
+
+                if(newBoard === false) { //If column is full, disincentivize. Also stops recusion early, should speed up
+                    moveList[i] = 2
+                } else {    
+                    boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
+                    moveList[i] = boardEval
+                }
                 value = Math.min(boardEval, value)
                 if (value <= alpha) {
                     break
@@ -283,7 +297,7 @@ function setup() {
             return moveList
         } else {
             //Do some averaging for moves here, take into accound recusion depth
-            let depthFactor = (1 - recursionDepth / 20)
+            let depthFactor = (1 - recursionDepth / 1000)
 
             if (turn === 1) {
                 let worstOutcome = 1
@@ -299,18 +313,18 @@ function setup() {
                 let averageValue = 0
                 for (let i = 0; i < 7; i++) {
                     if(moveList[i] >= 0.99) { //Means they can pick a near won state, hence this state is good
-                        return 1
+                        return 1*depthFactor //Depthfactor ensures they chose an earlier win if they have multiple possible ones available
                     }
-                    averageValue += moveList[i] * depthFactor / 7
+                    if(moveList[i] === -2) {
+                        averageValue += -1/7
+                    } else {
+                        averageValue += moveList[i]/7
+                    }
                 }
                 return averageValue 
             }
-
-            if (recursionDepth <= 2) {
-                console.log(averageValue)
-            }
             //console.log(averageValue, recursionDepth)
-            return averageValue //if not at depth 0, just return the value
+            //return averageValue //if not at depth 0, just return the value
 
             //Need to do a systematic algorithm here, minimizing certain losses, while maximizing the chances for going into big wins.
         }
@@ -322,7 +336,10 @@ function setup() {
         //This returns a 7 element list, chose the highest one which is possible to do
         //placementList = placementList.map((e, index) => e + ((3 - Math.abs(3 - index)) / 1000))
         console.log(placementList)
+        let index = placementList.indexOf(Math.max.apply(Math, placementList))
+        placeTile(index)
         //To check we're doing legal moves
+        /*
         for (let i = 0; i < 7; i++) {
             let index = placementList.indexOf(Math.max.apply(Math, placementList))
             if (gameBoard.split("3")[index][5] === "0") {
@@ -330,12 +347,9 @@ function setup() {
                 break;
             }
             placementList[index] = Number.NEGATIVE_INFINITY;
-        }
+        } */
     }
-
-
     generateBoard();
-
 }
 
 
@@ -354,3 +368,7 @@ function setup() {
 //move you make gives them a win, they still dont evaluate that as a win
 //Can maybe add a check to the "insert" function. If the spot trying to be filled is full, return some value which signifies that you cant place ther
 //Maybe +/-1 depending on which player is trying to do that move? Need to think about what makes sense there..
+//If its maximizing player, return -1, as its a move they will never consider
+//If its minimizing player, return 1, as its a move they will never consider
+//With these added, it considers that forcing red to have to play on a filled column is a win...
+//Maybe 2 is not the right value to chose...
