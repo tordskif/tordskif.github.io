@@ -14,43 +14,6 @@ function setup() {
 
     //If we implement a recursive solution, maybe we can do this in a cleaner way?
 
-    /**
-     For å få bedre performance, tror jeg at jeg bør forandre boardstate til en string
-     Da slipper jeg å bruke clone funksjonen for å lage nye boards
-     tror kanskje det er det som gjør det treigt
-     Må da forandre lit på regexen, ikke mye, men mass 0 på rad må bety en kollonne, ikke en rad
-     For å sette inn noe i den 4 kollonna da, må en først komme forbi 3 3ere, også sette den nye brikken
-     der den neste nullen er etter dette
-
-     Have boardstate string a:
-
-     arrayOfColums = a.split("3");
-     columnToPushIn = arrayOfCoulums[columnToChoose-1]
-     columnToPushIn[columnToPushIn.indexOf("0")] = currentTurn; //this will give the first place where 0 occurs
-    //not sure if the above actually changes the string.. need to do some testing in column
-    //maybe have to stitch together the string again, with the one spot changed... feels wrong tho
-
-    lastly, use a = arrayOfColums.join("3"); to make a back to a string
-    not sure if this will add a 3 first and/or last in the string, not sure if i need it there...
-
-    Sikkert bruke string.replace(index,currentturn) //tror det er syntaksen
-
-    str.replace(regexp|substr, newSubstr|function)
-    A String that is to be replaced by newSubStr. It is treated as a verbatim string and is not interpreted as a regular expression. Only the first occurrence will be replaced.
-    A function to be invoked to create the new substring to be used to replace the matches to the given regexp or substr. The arguments supplied to this function are described in the "Specifying a function as a parameter" section below.
-    a = "hallo";
-    a.replace("l","d") returns "hadlo" //doesnt ruin old string, can then say what new string is gonna be and dont ruin old string
-    Can use this together with columnToPushIn[columnToPushIn.indexOf("0")] //actually dont need this
-
-    s = a.split("3");
-    s[2] = s[2].replace("0", "1");
-    a = s.join("3");
-
-    If a string is: a = "121220000"
-    newstring = a.replace("0", currentturn) //currentturn = 2;
-    newstring === "121222000" //i think this will work
-    //yeah it does
-     */
     let divBoard = [
         [], //collum 1
         [], //collum 2 etc...
@@ -68,8 +31,8 @@ function setup() {
     let main = document.getElementById("main");
 
     //Regexes used to determine if a certain board state is a win/loss
-    let redwintest = /1(\d{7,7}1){3,}|1(\d{6,6}1){3,}|1(\d{5,5}1){3,}|1111/
-    let yellowwintest = /2(\d{7,7}2){3,}|2(\d{6,6}2){3,}|2(\d{5,5}2){3,}|2222/
+    let redwintest = /1(\d{7,7}1){3,3}|1(\d{6,6}1){3,3}|1(\d{5,5}1){3,3}|1111/
+    let yellowwintest = /2(\d{7,7}2){3,3}|2(\d{6,6}2){3,3}|2(\d{5,5}2){3,3}|2222/
 
     //Generating the 7x6 board of divs
     function generateBoard() {
@@ -265,7 +228,7 @@ function setup() {
         if (yellowwintest.test(gameBoard)) {
             return 1
         }
-        if (recursionDepth >= 6) {
+        if (recursionDepth >= 8) {
             return 0
             //return AverageEvaluateBoard(gameBoard, turn) //This will maximize the number of good moves for us, minus number of bad moves from opponent
         }
@@ -285,7 +248,7 @@ function setup() {
         let moveList = []
         if (turn === 2) {
             value = Number.NEGATIVE_INFINITY
-            moveList = [0,0,0,0,0,0,0]
+            moveList = [0, 0, 0, 0, 0, 0, 0]
             for (let i = 0; i < 7; i++) {
                 let newBoard = insert(gameBoard, i, turn)
                 let boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
@@ -294,13 +257,13 @@ function setup() {
                 if (value >= beta) {
                     break
                 }
-                //alpha = Math.max(alpha, value)
+                alpha = Math.max(alpha, value)
             }
         }
         //If minimixing player
         if (turn === 1) {
             value = Number.POSITIVE_INFINITY
-            moveList = [0,0,0,0,0,0,0]
+            moveList = [0, 0, 0, 0, 0, 0, 0]
             for (let i = 0; i < 7; i++) {
                 let newBoard = insert(gameBoard, i, turn)
                 let boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
@@ -309,7 +272,7 @@ function setup() {
                 if (value <= alpha) {
                     break
                 }
-                //beta = Math.min(beta, value)
+                beta = Math.min(beta, value)
             }
         }
         //Now we have a list of 7 numbers, the value of making each move. If its reds turn, we chose the lowest one.
@@ -320,21 +283,30 @@ function setup() {
             return moveList
         } else {
             //Do some averaging for moves here, take into accound recusion depth
-            let averageValue = 0
-            for (let i = 0; i < 7; i++) {
-                if(turn === 1) {
-                    if(moveList[i] <= -0.99) {
-                        return -1
+            let depthFactor = (1 - recursionDepth / 20)
+
+            if (turn === 1) {
+                let worstOutcome = 1
+                for (let i = 0; i < 7; i++) {
+                    if (moveList[i] <= worstOutcome) {
+                        worstOutcome = moveList[i]
                     }
                 }
-                if(turn === 2) {
-                    if(moveList[i] >= 0.99) {
+                return worstOutcome
+            }
+
+            if (turn === 2) {
+                let averageValue = 0
+                for (let i = 0; i < 7; i++) {
+                    if(moveList[i] >= 0.99) { //Means they can pick a near won state, hence this state is good
                         return 1
                     }
+                    averageValue += moveList[i] * depthFactor / 7
                 }
-                averageValue += moveList[i]/7
+                return averageValue 
             }
-            if(recursionDepth <= 2) {
+
+            if (recursionDepth <= 2) {
                 console.log(averageValue)
             }
             //console.log(averageValue, recursionDepth)
@@ -362,23 +334,23 @@ function setup() {
     }
 
 
-    function AverageEvaluateBoard(gameBoard, turn) {
-        let averageValue = 0 //Keep this running value, increase it for each good next move, decrease it for each bad next move
-        for (let i = 0; i < 7; i++) {
-            let newBoard = insert(gameBoard, i, turn)
-            //If red has won, give board a bad value
-            if (redwintest.test(newBoard)) {
-                averageValue -= 1
-            }
-            //If yellow has won, give board a good value
-            if (yellowwintest.test(newBoard)) {
-                averageValue += 1
-            }
-        }
-        return averageValue
-    }
-
-
     generateBoard();
 
 }
+
+
+
+// 122212322111231121213211212320000031121103212221 weird board where wrong tiles were colored
+// but regex says this doesnt win
+// Something is off in the coloring algorithm, it gives the same results when running the code on this result:
+// 122212322111231121213211212321000031121103212221
+// It gives a string of length 25, which should be a diagonal one?
+// OH THINK ITS BECAUSE IT MAKES 5 IN A ROW. WHICH MEANS THE REGEX CATCHES THE WHOLE PART, NOT JUST THE 
+// 1231121213211212321000031 this is the substring it finds
+// Oh it isnt just a horisontal one, its also a diagonal one of length 5, need to somehow limit the regex to just find exactly 4 segments
+// Think i fixed it
+
+//One thing to fix, it doesnt understand the concept of "Forcing" you to make the final few moves. Even if they place a spot so that any
+//move you make gives them a win, they still dont evaluate that as a win
+//Can maybe add a check to the "insert" function. If the spot trying to be filled is full, return some value which signifies that you cant place ther
+//Maybe +/-1 depending on which player is trying to do that move? Need to think about what makes sense there..
