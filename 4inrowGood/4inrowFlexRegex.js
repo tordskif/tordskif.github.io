@@ -219,7 +219,6 @@ function setup() {
         }
     }
 
-    //This is the one that really needs a lot of work. Do this whole thing recursively instead.
     //Takes in a gameBoard and currentTurn, uses recusion to evaluate best move one move down
     function EvaluateBoard(gameBoard, turn, alpha, beta, recursionDepth = 0) {
         //Base cases
@@ -231,9 +230,9 @@ function setup() {
         if (yellowwintest.test(gameBoard)) {
             return 1
         }
-        if (recursionDepth >= 8) {
+        //If we meet a set max recursion depth, just return 0 
+        if (recursionDepth >= 9) {
             return 0
-            //return AverageEvaluateBoard(gameBoard, turn) //This will maximize the number of good moves for us, minus number of bad moves from opponent
         }
         let nextTurn;
         if (turn === 1) {
@@ -243,8 +242,7 @@ function setup() {
             nextTurn = 1
         }
         //For each of the seven possible moves, generate that board, and pass it into this function recursively
-        //Do alpha beta split
-
+        //Minimax with alpha-beta pruning
 
         //First if maximizing player:
         let value = 0
@@ -289,39 +287,53 @@ function setup() {
                 beta = Math.min(beta, value)
             }
         }
-        //Now we have a list of 7 numbers, the value of making each move. If its reds turn, we chose the lowest one.
-        //If its yellows, choose the highest.
+        //Now we have a list of 7 numbers, the value of making each move. Need to send a value to show a value for this state
 
         //If it is the original function call, we want to return a move, not a score.
         if (recursionDepth === 0) {
             return moveList
         } else {
-            //Do some averaging for moves here, take into accound recusion depth
+            //Do some averaging for moves here, take into account recusion depth
             let depthFactor = (1 - recursionDepth / 1000)
-
+            //Have different behaviour depending on depth. If they see that they have 100% lost in 8 moves, they dont need to give up hope
+            //Player might not play perfectly.
             if (turn === 1) {
-                let worstOutcome = 1
-                for (let i = 0; i < 7; i++) {
-                    if (moveList[i] <= worstOutcome) {
-                        worstOutcome = moveList[i]
+                if (recursionDepth <= 3) { //If close to surface, return worst case (when including the depthfactor, might not need this? Well if all losses are at same depth, it really doesnt change that much. Maybe have this for 3 turn deep losses)
+                    let worstOutcome = 1
+                    for (let i = 0; i < 7; i++) {
+                        if (moveList[i] <= worstOutcome) {
+                            worstOutcome = moveList[i]
+                        }
                     }
+                    return worstOutcome * depthFactor //Include the depth factor, makes it live longest before losing
+                } else { //Else, do averaging behaviour
+                    let averageValue = 0
+                    let fullRows = 0
+                    for (let i = 0; i < 7; i++) {
+                        if(moveList[i] === 2) { //Means the row is full
+                            fullRows += 1
+                        } else {
+                            averageValue += moveList[i]
+                        }
+                    }
+                    return averageValue/(7-fullRows)
                 }
-                return worstOutcome
             }
 
             if (turn === 2) {
                 let averageValue = 0
+                let fullRows = 0
                 for (let i = 0; i < 7; i++) {
                     if(moveList[i] >= 0.99) { //Means they can pick a near won state, hence this state is good
                         return 1*depthFactor //Depthfactor ensures they chose an earlier win if they have multiple possible ones available
                     }
-                    if(moveList[i] === -2) {
-                        averageValue += -1/7
+                    if(moveList[i] === -2) { //Means the row is full
+                        fullRows += 1
                     } else {
-                        averageValue += moveList[i]/7
+                        averageValue += moveList[i]
                     }
                 }
-                return averageValue 
+                return averageValue/(7-fullRows) //Obtain average of rows which are not full
             }
             //console.log(averageValue, recursionDepth)
             //return averageValue //if not at depth 0, just return the value
