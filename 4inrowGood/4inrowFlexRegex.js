@@ -183,19 +183,19 @@ function setup() {
                             divBoard[i][j - 2].style.filter = "hue-rotate(-60deg)";
                             divBoard[i][j - 3].style.filter = "hue-rotate(-60deg)";
                         }
-                        if(length === 19) {
+                        if (length === 19) {
                             divBoard[i][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 1][j + 1].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 2][j + 2].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 3][j + 3].style.filter = "hue-rotate(-60deg)";
                         }
-                        if(length === 22) {
+                        if (length === 22) {
                             divBoard[i][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 1][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 2][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 3][j].style.filter = "hue-rotate(-60deg)";
                         }
-                        if(length === 25) {
+                        if (length === 25) {
                             divBoard[i][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 1][j - 1].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 2][j - 2].style.filter = "hue-rotate(-60deg)";
@@ -227,19 +227,19 @@ function setup() {
                             divBoard[i][j - 2].style.filter = "hue-rotate(-60deg)";
                             divBoard[i][j - 3].style.filter = "hue-rotate(-60deg)";
                         }
-                        if(length === 19) {
+                        if (length === 19) {
                             divBoard[i][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 1][j + 1].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 2][j + 2].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 3][j + 3].style.filter = "hue-rotate(-60deg)";
                         }
-                        if(length === 22) {
+                        if (length === 22) {
                             divBoard[i][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 1][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 2][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 3][j].style.filter = "hue-rotate(-60deg)";
                         }
-                        if(length === 25) {
+                        if (length === 25) {
                             divBoard[i][j].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 1][j - 1].style.filter = "hue-rotate(-60deg)";
                             divBoard[i + 2][j - 2].style.filter = "hue-rotate(-60deg)";
@@ -258,21 +258,22 @@ function setup() {
     function EvaluateBoard(gameBoard, turn, alpha, beta, recursionDepth = 0) {
         //Base cases
         //If red has won, give board a bad value
-        if(redwintest.test(gameBoard)) {
-            return -100/recursionDepth //Could divide these by recursion depth for them to prefer an earlier win
+        if (redwintest.test(gameBoard)) {
+            return -1
         }
         //If yellow has won, give board a good value
-        if(yellowwintest.test(gameBoard)) {
-            return 100*recursionDepth
+        if (yellowwintest.test(gameBoard)) {
+            return 1
         }
-        if(recursionDepth >= 8) {
-            return AverageEvaluateBoard(gameBoard, turn) //This will maximize the number of good moves for us, minus number of bad moves from opponent
+        if (recursionDepth >= 6) {
+            return 0
+            //return AverageEvaluateBoard(gameBoard, turn) //This will maximize the number of good moves for us, minus number of bad moves from opponent
         }
         let nextTurn;
-        if(turn === 1) {
+        if (turn === 1) {
             nextTurn = 2
         }
-        if(turn === 2) {
+        if (turn === 2) {
             nextTurn = 1
         }
         //For each of the seven possible moves, generate that board, and pass it into this function recursively
@@ -282,41 +283,64 @@ function setup() {
         //First if maximizing player:
         let value = 0
         let moveList = []
-        if(turn === 2) {
+        if (turn === 2) {
             value = Number.NEGATIVE_INFINITY
+            moveList = [0,0,0,0,0,0,0]
             for (let i = 0; i < 7; i++) {
                 let newBoard = insert(gameBoard, i, turn)
-                boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
-                moveList.push(boardEval)
+                let boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
+                moveList[i] = boardEval
                 value = Math.max(boardEval, value)
-                if(value >= beta) {
+                if (value >= beta) {
                     break
                 }
-                alpha = Math.max(alpha, value)
+                //alpha = Math.max(alpha, value)
             }
         }
         //If minimixing player
-        if(turn === 1) {
+        if (turn === 1) {
             value = Number.POSITIVE_INFINITY
+            moveList = [0,0,0,0,0,0,0]
             for (let i = 0; i < 7; i++) {
                 let newBoard = insert(gameBoard, i, turn)
-                boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
-                moveList.push(boardEval)
+                let boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
+                moveList[i] = boardEval
                 value = Math.min(boardEval, value)
-                if(value <= alpha) {
+                if (value <= alpha) {
                     break
                 }
-                beta = Math.min(beta, value)
+                //beta = Math.min(beta, value)
             }
         }
         //Now we have a list of 7 numbers, the value of making each move. If its reds turn, we chose the lowest one.
         //If its yellows, choose the highest.
 
         //If it is the original function call, we want to return a move, not a score.
-        if(recursionDepth === 0) {
+        if (recursionDepth === 0) {
             return moveList
         } else {
-            return value //if not at depth 0, just return the value
+            //Do some averaging for moves here, take into accound recusion depth
+            let averageValue = 0
+            for (let i = 0; i < 7; i++) {
+                if(turn === 1) {
+                    if(moveList[i] <= -0.99) {
+                        return -1
+                    }
+                }
+                if(turn === 2) {
+                    if(moveList[i] >= 0.99) {
+                        return 1
+                    }
+                }
+                averageValue += moveList[i]/7
+            }
+            if(recursionDepth <= 2) {
+                console.log(averageValue)
+            }
+            //console.log(averageValue, recursionDepth)
+            return averageValue //if not at depth 0, just return the value
+
+            //Need to do a systematic algorithm here, minimizing certain losses, while maximizing the chances for going into big wins.
         }
 
     }
@@ -324,7 +348,7 @@ function setup() {
     function AIPick() {
         placementList = EvaluateBoard(gameBoard, 2, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY)
         //This returns a 7 element list, chose the highest one which is possible to do
-        placementList = placementList.map((e,index) => e + ((3 - Math.abs(3 - index)) / 1000))
+        //placementList = placementList.map((e, index) => e + ((3 - Math.abs(3 - index)) / 1000))
         console.log(placementList)
         //To check we're doing legal moves
         for (let i = 0; i < 7; i++) {
@@ -343,11 +367,11 @@ function setup() {
         for (let i = 0; i < 7; i++) {
             let newBoard = insert(gameBoard, i, turn)
             //If red has won, give board a bad value
-            if(redwintest.test(newBoard)) {
+            if (redwintest.test(newBoard)) {
                 averageValue -= 1
             }
             //If yellow has won, give board a good value
-            if(yellowwintest.test(newBoard)) {
+            if (yellowwintest.test(newBoard)) {
                 averageValue += 1
             }
         }
