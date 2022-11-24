@@ -253,17 +253,17 @@ function setup() {
             for (let i = 0; i < 7; i++) {
                 let boardEval = -2
                 let newBoard = insert(gameBoard, i, turn)
-                if(newBoard === false) { //If column is full, disincentivize. Also stops recusion early, should speed up
+                if (newBoard === false) { //If column is full, disincentivize. Also stops recusion early, should speed up
                     moveList[i] = -2
                 } else {
                     boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
                     moveList[i] = boardEval
+                    value = Math.max(boardEval, value)
+                    if (value >= beta) {
+                        break
+                    }
+                    alpha = Math.max(alpha, value)
                 }
-                value = Math.max(boardEval, value)
-                if (value >= beta) {
-                    break
-                }
-                alpha = Math.max(alpha, value)
             }
         }
         //If minimixing player
@@ -274,17 +274,17 @@ function setup() {
                 let boardEval = 2
                 let newBoard = insert(gameBoard, i, turn)
 
-                if(newBoard === false) { //If column is full, disincentivize. Also stops recusion early, should speed up
+                if (newBoard === false) { //If column is full, disincentivize. Also stops recusion early, should speed up
                     moveList[i] = 2
-                } else {    
+                } else {
                     boardEval = EvaluateBoard(newBoard, nextTurn, alpha, beta, recursionDepth + 1)
                     moveList[i] = boardEval
+                    value = Math.min(boardEval, value)
+                    if (value <= alpha) { //Only do pruning on legal moves
+                        break
+                    }
+                    beta = Math.min(beta, value)
                 }
-                value = Math.min(boardEval, value)
-                if (value <= alpha) {
-                    break
-                }
-                beta = Math.min(beta, value)
             }
         }
         //Now we have a list of 7 numbers, the value of making each move. Need to send a value to show a value for this state
@@ -298,26 +298,20 @@ function setup() {
             //Have different behaviour depending on depth. If they see that they have 100% lost in 8 moves, they dont need to give up hope
             //Player might not play perfectly.
             if (turn === 1) {
-                if (recursionDepth <= 3) { //If close to surface, return worst case (when including the depthfactor, might not need this? Well if all losses are at same depth, it really doesnt change that much. Maybe have this for 3 turn deep losses)
-                    let worstOutcome = 1
-                    for (let i = 0; i < 7; i++) {
-                        if (moveList[i] <= worstOutcome) {
-                            worstOutcome = moveList[i]
-                        }
+                let worstOutcome = 1
+                let fullRows = 0
+                for (let i = 0; i < 7; i++) {
+                    if (moveList[i] === 2) { //Dont count full columns as bad moves.. or maybe i should?
+                        fullRows += 1
                     }
-                    return worstOutcome * depthFactor //Include the depth factor, makes it live longest before losing
-                } else { //Else, do averaging behaviour
-                    let averageValue = 0
-                    let fullRows = 0
-                    for (let i = 0; i < 7; i++) {
-                        if(moveList[i] === 2) { //Means the row is full
-                            fullRows += 1
-                        } else {
-                            averageValue += moveList[i]
-                        }
+                    if (moveList[i] <= worstOutcome) {
+                        worstOutcome = moveList[i]
                     }
-                    return averageValue/(7-fullRows)
                 }
+                if (fullRows === 7) {
+                    return 0
+                }
+                return worstOutcome * depthFactor //Include the depth factor, makes it live longest before losing
             }
 
             if (turn === 2) {
@@ -332,6 +326,9 @@ function setup() {
                     } else {
                         averageValue += moveList[i]
                     }
+                }
+                if(fullRows === 7) { //This means there are no legal moves, drawn position, return 0
+                    return 0
                 }
                 return averageValue/(7-fullRows) //Obtain average of rows which are not full
             }
