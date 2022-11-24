@@ -21,3 +21,9 @@
     background-color: #3B6AF3;
     z-index: -1;
 }
+#turn {
+    position: absolute;
+    top: 640px;
+    left: 50px;
+    font-size: 3em;
+}

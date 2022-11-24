@@ -29,6 +29,8 @@ function setup() {
     let currentTurn = 1; //1 is red, 2 is yellow
 
     let main = document.getElementById("main");
+    let turnText = document.getElementById("turn");
+    turnText.innerHTML = "Your turn"
 
     //Regexes used to determine if a certain board state is a win/loss
     let redwintest = /1(\d{7,7}1){3,3}|1(\d{6,6}1){3,3}|1(\d{5,5}1){3,3}|1111/
@@ -65,7 +67,7 @@ function setup() {
 
     //The top section displaying the scores. record is a global variable stored in localstorage.
     let recordDiv = document.getElementById("record");
-    recordDiv.innerHTML = "Red: " + record.split(",")[0] + " Yellow: " + record.split(",")[1];
+    recordDiv.innerHTML = "Red: " + record.split(",")[0] + ", Yellow: " + record.split(",")[1];
 
     //Function detecting a clik 
     function clickOnColumn(e) {
@@ -92,9 +94,11 @@ function setup() {
             }
             //Set gamestate to 2, signifying opponent is busy picking. Make AI pick, and wait for them to finish before setting state back.
             gameState = 2;
+            turnText.innerHTML = "Opponent is thinking..."
+
             setTimeout(AIPick, 10);
             setTimeout(function () {
-                if (gameState !== 1) { gameState = 0 };
+                if (gameState !== 1) { gameState = 0; turnText.innerHTML = "Your turn" };
             }, 100);
         }
     }
@@ -131,9 +135,10 @@ function setup() {
     function checkForWins() { //only need to check for currentturns
         if (redwintest.test(gameBoard)) { //kan finne ut hva regexen fant, kan fikse det senere for å highligte 4påraden
             gameState = 1;
+            turnText.innerHTML = "You won! Refresh to play again!"
             record = record.split(",")
             record[0] = parseFloat(record[0]) + 1;
-            recordDiv.innerHTML = "Red: " + record[0] + " Yellow: " + record[1];
+            recordDiv.innerHTML = "Red: " + record[0] + ", Yellow: " + record[1];
             record = record[0] + "," + record[1];
             localStorage.setItem("record", record);
             let test = redwintest.exec(gameBoard);
@@ -175,9 +180,10 @@ function setup() {
         }
         if (yellowwintest.test(gameBoard)) {
             gameState = 1;
+            turnText.innerHTML = "Opponent won. Refresh to try again"
             record = record.split(",")
             record[1] = parseFloat(record[1]) + 1;
-            recordDiv.innerHTML = "Red: " + record[0] + " Yellow: " + record[1];
+            recordDiv.innerHTML = "Red: " + record[0] + ", Yellow: " + record[1];
             record = record[0] + "," + record[1];
             localStorage.setItem("record", record);
             let test = yellowwintest.exec(gameBoard);
