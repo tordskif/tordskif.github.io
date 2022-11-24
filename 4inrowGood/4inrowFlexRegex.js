@@ -237,6 +237,18 @@ function setup() {
         }
     }
 
+
+    //If yellow can win with move i, return i. Else, return false
+    function lookForWin(gameBoard) {
+        for (let i = 0; i < 7; i++) {
+            newBoard = insert(gameBoard, i, 2)
+            if(yellowwintest.test(newBoard)) {
+                return i
+            }
+        }
+        return false
+    }
+
     //Takes in a gameBoard and currentTurn, uses recusion to evaluate best move one move down
     function EvaluateBoard(gameBoard, turn, alpha, beta, recursionDepth = 0) {
         //Base cases
@@ -359,6 +371,14 @@ function setup() {
     }
 
     function AIPick() {
+        //First look for depth 1 wins, silly to wait so long for these:
+        let isWin = lookForWin(gameBoard)
+        if(isWin !== false) { //Means isWin is the index which wins
+            placeTile(isWin)
+            return //dont need to do anything else
+        }
+        //Else, do the usual stuff
+
         placementList = EvaluateBoard(gameBoard, 2, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY)
         //This returns a 7 element list, chose the highest one which is possible to do
         //placementList = placementList.map((e, index) => e + ((3 - Math.abs(3 - index)) / 1000))
@@ -405,3 +425,6 @@ function setup() {
 //If its minimizing player, return 1, as its a move they will never consider
 //With these added, it considers that forcing red to have to play on a filled column is a win...
 //Maybe 2 is not the right value to chose...
+
+//Maybe dont always have to do depth first at depth 9, its a bit silly waiting so long for an instant win?
+//Maybe do depth 3 search only looking for wins first? Have to be a bit careful here though, maybe depth 1 search is fine here?
