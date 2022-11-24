@@ -6,6 +6,13 @@
     background-color: white;
     z-index: 1;
 }
+.numberField {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    font-size: 1.5em;
+    text-align: center;
+}
 #record {
     position: absolute;
     top: 0px;
@@ -17,7 +24,7 @@
     top: 20px;
     left: 20px;
     width: 670px;
-    height: 590px;
+    height: 610px;
     background-color: #3B6AF3;
     z-index: -1;
 }
@@ -26,4 +33,11 @@
     top: 640px;
     left: 50px;
     font-size: 3em;
+}
+#info {
+    position: absolute;
+    top: 0px;
+    left: 740px;
+    width: 700px;
+    font-size: 1.2em;
 }

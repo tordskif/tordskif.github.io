@@ -9,10 +9,26 @@
 
 <body>
     <div id="record"></div>
-    <div id="main">
-
+    <div id="main"></div>
+    <div id="turn"></div>
+    <div id="info">
+        <h3>What is this?</h3>
+        <div>
+            <p>This is a implementation of the game "4 in a row", where you play against the computer.
+             The computer uses a search algorithm known as "Minimax", to find out which move to play. 
+             It looks at all combinations of the next 9 moves, and evaluates the resulting boards, based on who is in a favourable position.
+             If red is winning, it gives a negative score. If yellow is winning, it gives a positive score. If neither are winning, the score is 0.
+             By disincentivizing moves which would lead to a loss, and incentivizing moves which give many opportunities for wins, it plays relatively well.
+             You can see the final evaluation of the boardstate yellow was faced with under each column. 
+             If you see a number greater than 0.9, you've likely already lost, maybe you just don't know it yet.
+            </p>
+            <p>
+             Note that while "4 in a row" is mathematically solved, and with perfect play red always wins in the last move of the game, 
+             this computer is not perfect. Since it is only looking 9 moves deep, it uses a heuristic calculation to try to maximize winning positions.
+             If you set up traps which will trigger in more than 9 turns, it is still possible to win, even without perfect play.
+            </p>
+            </div>
     </div>
-    <div id="turn">Helo</div>
 
     <script>
         setup();

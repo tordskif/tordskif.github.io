@@ -24,6 +24,8 @@ function setup() {
         []
     ];
 
+    numberFields = []
+
     window.ondragstart = function () { return false; }
 
     let currentTurn = 1; //1 is red, 2 is yellow
@@ -50,6 +52,16 @@ function setup() {
                 main.appendChild(newTile);
                 divBoard[i][j] = newTile;
             }
+            let newNumberField = document.createElement("div");
+                newNumberField.className = "numberField";
+                newNumberField.id = i;
+                let xloc = i * 90 + 20;
+                let yloc = 560;
+                newNumberField.style.left = xloc + "px";
+                newNumberField.style.top = yloc + "px";
+                main.appendChild(newNumberField);
+                numberFields[i] = newNumberField;
+                newNumberField.innerHTML = "0"
         }
     }
     main.addEventListener("click", clickOnColumn);
@@ -300,7 +312,7 @@ function setup() {
             return moveList
         } else {
             //Do some averaging for moves here, take into account recusion depth
-            let depthFactor = (1 - recursionDepth / 1000)
+            let depthFactor = (1 - recursionDepth / 100)
             //Have different behaviour depending on depth. If they see that they have 100% lost in 8 moves, they dont need to give up hope
             //Player might not play perfectly.
             if (turn === 1) {
@@ -324,7 +336,7 @@ function setup() {
                 let averageValue = 0
                 let fullRows = 0
                 for (let i = 0; i < 7; i++) {
-                    if(moveList[i] >= 0.99) { //Means they can pick a near won state, hence this state is good
+                    if(moveList[i] >= 0.9) { //Means they can pick a near won state, hence this state is good
                         return 1*depthFactor //Depthfactor ensures they chose an earlier win if they have multiple possible ones available
                     }
                     if(moveList[i] === -2) { //Means the row is full
@@ -350,9 +362,15 @@ function setup() {
         placementList = EvaluateBoard(gameBoard, 2, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY)
         //This returns a 7 element list, chose the highest one which is possible to do
         //placementList = placementList.map((e, index) => e + ((3 - Math.abs(3 - index)) / 1000))
-        console.log(placementList)
+        //console.log(placementList)
         let index = placementList.indexOf(Math.max.apply(Math, placementList))
         placeTile(index)
+
+        //Instead of logging the placementList, show it on screen:
+        for (let i = 0; i < numberFields.length; i++) {
+            numberFields[i].innerHTML = Math.round((placementList[i] + Number.EPSILON)*100)/100;
+            
+        }
         //To check we're doing legal moves
         /*
         for (let i = 0; i < 7; i++) {
