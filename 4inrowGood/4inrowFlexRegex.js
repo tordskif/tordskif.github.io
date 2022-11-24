@@ -373,34 +373,24 @@ function setup() {
     function AIPick() {
         //First look for depth 1 wins, silly to wait so long for these:
         let isWin = lookForWin(gameBoard)
+        let placementList = [0,0,0,0,0,0,0]
         if(isWin !== false) { //Means isWin is the index which wins
             placeTile(isWin)
-            return //dont need to do anything else
+            placementList[isWin] = 1 //Kinda have to cheat with the calculations here, since its only one layer deep
+        } else {
+            //Else, do the usual stuff
+            placementList = EvaluateBoard(gameBoard, 2, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY)
+            //This returns a 7 element list, chose the highest one which is possible to do
+            //placementList = placementList.map((e, index) => e + ((3 - Math.abs(3 - index)) / 1000))
+            //console.log(placementList)
+            let index = placementList.indexOf(Math.max.apply(Math, placementList))
+            placeTile(index)
         }
-        //Else, do the usual stuff
-
-        placementList = EvaluateBoard(gameBoard, 2, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY)
-        //This returns a 7 element list, chose the highest one which is possible to do
-        //placementList = placementList.map((e, index) => e + ((3 - Math.abs(3 - index)) / 1000))
-        //console.log(placementList)
-        let index = placementList.indexOf(Math.max.apply(Math, placementList))
-        placeTile(index)
-
+        
         //Instead of logging the placementList, show it on screen:
         for (let i = 0; i < numberFields.length; i++) {
             numberFields[i].innerHTML = Math.round((placementList[i] + Number.EPSILON)*100)/100;
-            
         }
-        //To check we're doing legal moves
-        /*
-        for (let i = 0; i < 7; i++) {
-            let index = placementList.indexOf(Math.max.apply(Math, placementList))
-            if (gameBoard.split("3")[index][5] === "0") {
-                placeTile(index);
-                break;
-            }
-            placementList[index] = Number.NEGATIVE_INFINITY;
-        } */
     }
     generateBoard();
 }
