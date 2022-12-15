@@ -15,16 +15,22 @@
         <h3>What is this?</h3>
         <div>
             <p>This is a implementation of the game "Connect Four", where you play against the computer.
-             The computer uses a search algorithm known as "Minimax", to find out which move to play. 
-             It looks at all combinations of the next several moves, and evaluates the resulting boards, based on who is in a favourable position.
-             If red is winning, it gives a negative score. If yellow is winning, it gives a positive score. If neither are winning, the score is 0.
-             By disincentivizing moves which would lead to a loss, and incentivizing moves which give many opportunities for wins, it plays relatively well.
-             You can see the final evaluation of the boardstate yellow was faced with under each column.
+                The computer uses a search algorithm known as "Minimax", to find out which move to play.
+                It looks at all combinations of the next several moves, and evaluates the resulting boards, based on who
+                is in a favourable position.
+                If red is winning, it gives a negative score. If yellow is winning, it gives a positive score. If
+                neither are winning, the score is 0.
+                By disincentivizing moves which would lead to a loss, and incentivizing moves which give many
+                opportunities for wins, it plays relatively well.
+                You can see the final evaluation of the boardstate yellow was faced with under each column.
             </p>
             <p>
-             Note that while "Connect Four" is mathematically solved, and with perfect play red always wins in the last move of the game, 
-             this computer is not perfect. Since it is only looking a few moves deep, it uses a heuristic calculation to try to maximize winning positions.
-             If you set up traps which will trigger far in the future, it is still possible to win, even without perfect play.
+                Note that while "Connect Four" is mathematically solved, and with perfect play red always wins in the
+                last move of the game,
+                this computer is not perfect. Since it is only looking a few moves deep, it uses a heuristic calculation
+                to try to maximize winning positions.
+                If you set up traps which will trigger far in the future, it is still possible to win, even without
+                perfect play.
             </p>
         </div>
     </div>
