@@ -1,0 +1,146 @@
+#tileHolder {
+    position: absolute;
+    top: 40px;
+    left: 35%;
+    height: 0px;
+}
+
+#shiftHolder {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+#shiftHoldBorder {
+    position: absolute;
+    top: 10px;
+    left: -130px;
+    width: 120px;
+    height: 120px;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+#scoreDiv {
+    position: absolute;
+    top: 150px;
+    left: -130px;
+    width: 120px;
+    height: 30px;
+    font-size: 20px;
+    text-align: center;
+}
+
+#levelDiv {
+    position: absolute;
+    top: 180px;
+    left: -130px;
+    width: 120px;
+    height: 30px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.nextHolder {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.nextHoldBorder {
+    position: absolute;
+    left: 10px;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    width: 120px;
+    height: 120px;
+}
+
+#queueDiv {
+    position: absolute;
+    top: 10px;
+    left: 330px;
+    width: 140px;
+    height: 660px;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+#powerUpDiv {
+    position: absolute;
+    left: -58px;
+    top: 215px;
+}
+
+#bombDiv {
+    position: absolute;
+    left: 0px;
+}
+
+#bombImg {
+    position: absolute;
+    left: -30px;
+    top: -2px;
+    width: 30px;
+    height: 30px;
+    background-image: url("Icons/bombIcon.png");
+    background-size: contain;
+}
+
+#bombCount {
+    position: absolute;
+    font-size: 20px;
+    width: 50px;
+    height: 40px;
+}
+
+#clockDiv {
+    position: absolute;
+    top: 32px;
+    left: 0px;
+}
+
+#clockImg {
+    position: absolute;
+    left: -30px;
+    top: -2px;
+    width: 30px;
+    height: 30px;
+    background-image: url("Icons/clockIcon.png");
+    background-size: contain;
+}
+
+#clockCount {
+    position: absolute;
+    font-size: 20px;
+    width: 50px;
+    height: 40px;
+}
+
+.tile {
+    position: absolute;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+.bomb { 
+    background-image: url("Icons/bombIcon.png");
+    background-size: contain;
+}
+
+.clock {
+    background-image: url("Icons/clockIcon.png");
+    background-size: contain;
+}
+
+
+.display {
+    position: absolute;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+}
