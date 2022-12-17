@@ -1,12 +1,16 @@
 import Player from "./Player.js"
 import Level from "./Level.js"
+import Hook from "./Hook.js"
 
 export default class Game {
-    constructor() {
+    constructor(playerX, playerY) {
         this.canvas = document.getElementById("game-canvas");
+        this.initializeCanvas()
         this.context = this.canvas.getContext("2d");
-        this.player;// = new Player(50, 50);
         this.level = new Level(2000, 2000);
+        this.player = new Player(playerX, playerY);
+        this.hook = new Hook(400,Math.PI/6, 20, 0.003)
+        this.addHookToPlayer(this.hook, this.player)
         this.currentLevel = 0;
         //this.levels = [level1, level2, level3];
         this.running = false;
@@ -14,9 +18,34 @@ export default class Game {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
         this.gameTick = 0
+
+        this.scrollX = 0
+        this.scrollY = 0
+
+        this.scale = 1
+    }
+
+    initializeCanvas() {
+        let screenWidth = document.documentElement.clientWidth
+        let screenHeight = document.documentElement.clientHeight
+        this.canvas.width = screenWidth*0.987
+        this.canvas.height = screenHeight*0.965
+    }
+
+    addHookToPlayer(hook, player) {
+        hook.addPlayer(player)
+        player.addHook(hook)
+    }
+
+    doScaling() {
+        this.player.setScale(this.scale)
+        this.level.setScale(this.scale)
     }
 
     start() {
+        //Initialize scaling
+        this.doScaling()
+
         // Listen for keydown and keyup events on the window object
         window.addEventListener('keydown', this.handleKeyDown);
         window.addEventListener('keyup', this.handleKeyUp);
@@ -34,7 +63,6 @@ export default class Game {
     }
 
     stop() {
-
         window.removeEventListener('keydown', this.handleKeyDown);
         window.removeEventListener('keyup', this.handleKeyUp);
     }
@@ -47,15 +75,20 @@ export default class Game {
         // Update game state
         this.player.update();
         this.level.update();
+        this.hook.update();
+
+        //Check if player is too far up/down/left/right, move scroll
+        this.doScroll();
 
         // Render game
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.player.render(this.context);
-        this.level.render(this.context);
+        this.player.render(this.context, this.scrollX, this.scrollY);
+        this.level.render(this.context, this.scrollX, this.scrollY);
+        this.hook.render(this.context, this.scrollX, this.scrollY)
 
         // Check for collisions and other game events
         this.checkCollisions();
-        this.checkVictory();
+        //this.checkVictory();
 
         // Request next frame
         requestAnimationFrame(() => this.mainLoop());
@@ -72,6 +105,20 @@ export default class Game {
     handleKeyUp(event) {
         // Handle keyup events here
         this.player.handleUpInput(event.key);
+    }
+
+    doScroll() {
+        while(this.player.x - this.scrollX > this.canvas.width*0.6) { //Right side
+            this.scrollX += 1
+        }
+        while(this.player.x - this.scrollX < this.canvas.width*0.4) { //Left side
+            this.scrollX -= 1
+        }while(this.player.y - this.scrollY > this.canvas.height*0.6) { //Bot side
+            this.scrollY += 1
+        }
+        while(this.player.y - this.scrollY < this.canvas.height*0.2) { //Top side
+            this.scrollY -= 1
+        }
     }
 
     checkCollisions() {
@@ -96,6 +143,19 @@ export default class Game {
             this.player.onRightWall = false
             this.player.onLeftWall = false
         }
+        if(this.hook.deployed) {
+            for (const platform of this.level.platforms) { 
+                if (this.hook.x <= platform.x + platform.width &&
+                    this.hook.x >= platform.x &&
+                    this.hook.y <= platform.y + platform.height &&
+                    this.hook.y >= platform.y) {
+                    // Collision detected
+                    this.hook.handleCollision(platform)
+                }
+            }
+        }
+        //Check for collisions between hook and platforms:
+
 
         // Check for collisions between the player and enemies
         /*

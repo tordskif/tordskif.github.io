@@ -24,13 +24,19 @@ export default class Level {
         }*/
     }
 
-    render(context) {
+    render(context, scrollX, scrollY) {
         for (const platform of this.platforms) {
-            platform.render(context);
+            platform.render(context, scrollX, scrollY);
         }
         /*
         for (const enemy of this.enemies) {
             enemy.render(context);
         }*/
+    }
+
+    setScale(scale) {
+        for (const platform of this.platforms) {
+            platform.setScale(scale);
+        }
     }
 }
