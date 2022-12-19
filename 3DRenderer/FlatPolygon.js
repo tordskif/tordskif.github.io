@@ -26,9 +26,10 @@ export default class FlatPolygon {
         }
         context.closePath()
         context.lineWidth = this.lineWidth
-        context.strokeStyle = this.color
+        context.strokeStyle = "black"
         context.stroke()
         context.fill()
+        //Addsome way to draw the "true" outline border, and not all the interior triangles...
     }
 
     addToList(list) {

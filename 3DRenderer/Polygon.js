@@ -9,6 +9,13 @@ export default class Polygon {
         this.color = color
     }
 
+    translate(dx, dy, dz, id) {
+        for(let i = 0; i < this.vertecies.length; i++) {
+            let vertex = this.vertecies[i]
+            vertex.translate(dx, dy, dz, id)
+        }
+    }
+
     addVertex(vertex) {
         this.vertecies.push(vertex)
     }
