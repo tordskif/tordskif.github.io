@@ -12,15 +12,17 @@ export default class Camera {
         //Camera angle, first vertical plane,  0-2pi, pitch, then in horizontal plane, yaw -pi/2 - pi/2
         this.v = 0 //Theta, yaw
         this.w = 0 //Phi, pitch
+        this.maxPitch = Math.PI/2
+        this.minPitch = -Math.PI/2
         //Something about FOV, or width/height of "screen" to project onto
         //Height of hypothetical "screen"
-        this.height = 1.5
+        this.height =0.15
         //Width of hypothetical "screen"
-        this.width = 4
+        this.width = 0.4
         //How far hypothetical "screen" is from camera position
-        this.distance = 1
-
-        this.stepLength = 1
+        this.distance = 0.1
+        //How far something is off the "screen" before being discarded
+        this.margin = 0.1
 
         this.scene = undefined
 
@@ -32,14 +34,66 @@ export default class Camera {
 
         //Assume right hand system with x, y as flat directions
 
+
+        //KeydownBools
+        this.wDown = false
+        this.sDown = false
+        this.aDown = false
+        this.dDown = false
+        this.shiftDown = false
+        this.spaceDown = false
+        this.stepLength = 0.1
+
+        this.pointerLocked = false
+
         
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
     }
 
     start() {
         window.addEventListener('keydown', this.handleKeyDown);
         window.addEventListener('keyup', this.handleKeyUp);
+        window.addEventListener('mousemove', this.handleMouseMove)
+
+        canvas.onclick = () => {
+            if(this.pointerLocked) {
+                document.exitPointerLock()
+                this.pointerLocked = false
+            } else {
+                this.canvas.requestPointerLock()
+                this.pointerLocked = true
+            }
+        }
+
+        this.mainLoop()
+    }
+
+    mainLoop() {
+        //Movement if keydown
+        if(this.wDown) {
+            this.moveForward()
+        }
+        if(this.sDown) {
+            this.moveBackward()
+        }
+        if(this.dDown) {
+            this.moveRight()
+        }
+        if(this.aDown) {
+            this.moveLeft()
+        }
+        if(this.shiftDown) {
+            this.moveDown()
+        }
+        if(this.spaceDown) {
+            this.moveUp()
+        }
+
+
+        this.renderScene(this.scene)
+        requestAnimationFrame(() => this.mainLoop());
     }
 
     handleKeyDown(e) {
@@ -62,23 +116,58 @@ export default class Camera {
             this.moveLeft()
             this.renderScene(this.scene)
         }
-        if(e.key === "a") {
-            this.v += 0.15
-            this.renderScene(this.scene)
+        if(e.key === "a" || e.key === "A") {
+            this.aDown = true
         }
-        if(e.key === "d") {
-            this.v -= 0.15
-            this.renderScene(this.scene)
+        if(e.key === "d" || e.key === "D") {
+            this.dDown = true
         }
-        if(e.key === "w") {
-            this.w += 0.05
-            this.renderScene(this.scene)
+        if(e.key === "w" || e.key === "W") {
+            this.wDown = true
         }
-        if(e.key === "s") {
-            this.w -= 0.05
-            this.renderScene(this.scene)
+        if(e.key === "s" || e.key === "S") {
+            this.sDown = true
         }
+        if(e.key === "Shift") {
+            this.shiftDown = true
+        }
+        if(e.key === " ") {
+            this.spaceDown = true
+        }
+    }
 
+    handleKeyUp(e) {
+        if(e.key === "a" || e.key === "A") {
+            this.aDown = false
+        }
+        if(e.key === "d" || e.key === "D") {
+            this.dDown = false
+        }
+        if(e.key === "w" || e.key === "W") {
+            this.wDown = false
+        }
+        if(e.key === "s" || e.key === "S") {
+            this.sDown = false
+        }
+        if(e.key === "Shift") {
+            this.shiftDown = false
+        }
+        if(e.key === " ") {
+            this.spaceDown = false
+        }
+    }
+
+    handleMouseMove(e) {
+        this.v += -e.movementX/200
+
+        //Make sure we dont move too far up/down on pitch
+        if(this.w + -e.movementY/200 >= this.maxPitch) {
+            this.w = this.maxPitch
+        } else  if(this.w + -e.movementY/200 <= this.minPitch) {
+            this.w = this.minPitch
+        } else {  
+            this.w += -e.movementY/200
+        }
     }
 
     moveForward() {
@@ -97,9 +186,11 @@ export default class Camera {
         this.x += -Math.sin(this.v)*this.stepLength
         this.y += -Math.cos(this.v)*this.stepLength
     }
-
-    handleKeyUp(e) {
-
+    moveDown() {
+        this.z += -this.stepLength
+    }
+    moveUp() {
+        this.z += this.stepLength
     }
 
     addScene(scene) {
@@ -108,7 +199,6 @@ export default class Camera {
 
     //Take in scene, project everythng onto screen, return 2d scene. Have separate method to actually render this scene
     projectScene(scene) {
-        console.log(1)
         let flatScene = new FlatScene()
         for(let i = 0; i < scene.worldObjects.length; i++) {
             let worldObject = scene.worldObjects[i]
@@ -119,31 +209,32 @@ export default class Camera {
     }
 
     projectObject(worldObject) {
-        console.log(2)
         let flatObject = new FlatObject()
-        //console.log("worldobject:", worldObject)
         for(let i = 0; i < worldObject.polygons.length; i++) {
             let polygon = worldObject.polygons[i]
             let flatPolygon = this.projectPolygon(polygon)
-            console.log(flatPolygon)
+            if(flatPolygon === undefined) {
+                continue
+            }
             flatObject.addPolygon(flatPolygon)
         }
         return flatObject
     }
 
     projectPolygon(polygon) {
-        console.log(3)
         let flatPolygon = new FlatPolygon(polygon.lineWidth, polygon.color)
         for(let i = 0; i < polygon.vertecies.length; i++) {
             let vertex = polygon.vertecies[i]
             let flatVertex = this.projectVertex(vertex)
+            if(flatVertex === undefined) {
+                return undefined
+            }
             flatPolygon.addVertex(flatVertex)
         }
         return flatPolygon
     }
 
     projectVertex(vertex) {
-        console.log(4)
         //Do math
         //Define ray from camera location to vertex location
         let xDist = vertex.x - this.x
@@ -161,12 +252,16 @@ export default class Camera {
         let screenY = y*this.distance/x //This will be the x-coordinate on screen
         let screenZ = z*this.distance/x //This will be the y-coordinate on screen
         //Then check if this is within screen width/height, and scale, letting screenX/screenY = 0 be the midpoint of screen, and max width/height be corners of screen
-        console.log(screenY, screenZ)
+        
+        if(x < 0) { //Means its behind camera
+            return undefined
+        }
+
         let canvasX = this.canvas.width/2 + screenY/(this.width)*this.canvas.width
         let canvasY = this.canvas.height/2 - screenZ/(this.height)*this.canvas.height
+        let depth = x
 
-        let flatVertex = new FlatVertex(canvasX, canvasY)
-        console.log(canvasX,canvasY)
+        let flatVertex = new FlatVertex(canvasX, canvasY, depth)
         return flatVertex
     }
 
@@ -187,33 +282,24 @@ export default class Camera {
         //Doing them one after the other seemed to make it work...
 
         return [newerX, newerY, newerZ]
-
-
-        /**
-         * //Rotation matrix that worked around usual y axis
-        let newX = cosTheta*cosPhi*x - sinTheta*y + cosTheta*sinPhi*z
-        let newY = sinTheta*cosPhi*x + cosTheta*y + sinTheta*sinPhi*z
-        let newZ = -sinPhi*x + cosPhi*z
-        another attempt:
-        
-        let newerX = (cosPhi + sinTheta*sinTheta*(1-cosPhi))*newX + (sinTheta*cosTheta*(1-cosPhi))*newY + cosTheta*sinPhi*newZ
-        let newerY = (sinTheta*cosTheta*(1-cosPhi))*newX + (cosPhi + cosTheta*cosTheta*(1-cosPhi))*newY - sinTheta*sinPhi*newZ
-        let newerZ = (-cosTheta * sinPhi)*newX + (sinTheta*sinPhi)*newY + cosPhi*newZ
-         */
     }
 
     //Take in 3dscene, use projectscene to get a 2dscene, and render this
     renderScene(scene) {
-        console.log(scene)
         let flatScene = this.projectScene(scene)
-        console.log(flatScene)
 
+        let polygonList = []
+        flatScene.addToList(polygonList)
+        polygonList.sort((a, b) => (a.getAverageDepth() < b.getAverageDepth()) ? 1 : -1)
         
         let context = this.canvas.getContext("2d")
         
         context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         //Clear context first? 
-        flatScene.render(context)
+        for(let i = 0; i < polygonList.length; i++) {
+            let polygon = polygonList[i]   
+            polygon.render(context)
+        }
     }
     //Still need to give closer objects priority on rendering, and not render stuff that is not in field of view...
     //Atleast dont render if they are behind camera/camerascreen, should be relatively easy to check

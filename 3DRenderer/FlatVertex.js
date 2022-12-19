@@ -1,7 +1,8 @@
 export default class FlatVertex {
-    constructor(x,y) {
+    constructor(x,y, depth) {
         this.x = x
         this.y = y
+        this.depth = depth
     }
 
     translate(dx, dy) {

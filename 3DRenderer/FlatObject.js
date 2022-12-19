@@ -10,14 +10,21 @@ export default class FlatObject {
         }
     }
 
-    addPolygon(polygon) {
-        this.polygons.push(polygon)
-    }
-
     render(context) {
         for(let i = 0; i < this.polygons.length; i++) {
             let polygon = this.polygons[i]
             polygon.render(context)
+        }
+    }
+
+    addPolygon(polygon) {
+        this.polygons.push(polygon)
+    }
+    
+    addToList(list) {
+        for(let i = 0; i < this.polygons.length; i++) {
+            let polygon = this.polygons[i]
+            polygon.addToList(list)
         }
     }
 }

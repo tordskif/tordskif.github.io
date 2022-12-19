@@ -13,4 +13,11 @@ export default class FlatScene {
             flatObject.render(context)
         }
     }
+
+    addToList(list) {
+        for(let i = 0; i < this.flatObjects.length; i++) {
+            let flatObject = this.flatObjects[i]
+            flatObject.addToList(list)
+        }
+    }
 }

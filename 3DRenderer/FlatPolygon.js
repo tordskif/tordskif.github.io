@@ -1,5 +1,5 @@
 export default class FlatPolygon {
-    constructor(lineWidth, color) {
+    constructor(lineWidth = 1, color = "grey") {
         //vertecies is a list of flatVertex objects
         this.vertecies = []
         this.lineWidth = lineWidth
@@ -17,18 +17,32 @@ export default class FlatPolygon {
     }
 
     render(context) {
-        context.fillStyle = "black"
+        context.fillStyle = this.color
         context.beginPath()
         context.moveTo(this.vertecies[0].x, this.vertecies[0].y) //Start at first vertex
         for(let i = 0; i < this.vertecies.length; i++) {
             let vertex = this.vertecies[i]
-            console.log(vertex)
             context.lineTo(vertex.x, vertex.y)
         }
         context.closePath()
         context.lineWidth = this.lineWidth
+        context.strokeStyle = this.color
         context.stroke()
-        context.fillStyle = this.color
         context.fill()
+    }
+
+    addToList(list) {
+        list.push(this)
+    }
+    
+    //Return average depth of vertecies
+    getAverageDepth() {
+        let average = 0
+        let numVertecies = this.vertecies.length
+        for(let i = 0; i < numVertecies; i++) {
+            let vertex = this.vertecies[i]
+            average += vertex.depth/numVertecies
+        }
+        return average
     }
 }
