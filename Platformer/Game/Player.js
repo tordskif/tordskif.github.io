@@ -238,9 +238,9 @@ export default class Player {
         if (input === "ArrowDown") {
             this.downHeldDown = true
         }
-        if (input === " ") {
+        /* if (input === " ") {
             this.shootHook();
-        }
+        } */ //Disable this for now, doesnt work that great
         if (input === "e") {
             this.hook.undeploy()
         }
