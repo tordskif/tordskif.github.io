@@ -126,8 +126,14 @@ export default class Player {
         if(totalVelocity !== 0) {
             let xComponent = this.velX/totalVelocity
             let yComponent = this.velY/totalVelocity
-            totalAccX -= this.friction*totalVelocity*totalVelocity*xComponent
-            totalAccY -= this.friction*totalVelocity*totalVelocity*yComponent
+            console.log(this.onLeftWall, this.onRightWall)
+            if(this.onLeftWall || this.onRightWall) {
+                totalAccX -= this.friction*100 * totalVelocity * totalVelocity * xComponent
+                totalAccY -= this.friction*100 * totalVelocity * totalVelocity * yComponent
+            } else {
+                totalAccX -= this.friction*totalVelocity*totalVelocity*xComponent
+                totalAccY -= this.friction*totalVelocity*totalVelocity*yComponent
+            }
         }
 
         if (!this.grounded) {
@@ -197,6 +203,8 @@ export default class Player {
                 this.velX = 0
             }
             this.onRightWall = true
+        } else {
+            this.onRightWall = false
         }
         if (leftBorderOverlap === minValue) {
             if(this.velX > 0) {
@@ -204,6 +212,8 @@ export default class Player {
                 this.velX = 0
             }
             this.onLeftWall = true
+        } else {
+            this.onLeftWall = false
         }
         if (botBorderOverlap === minValue && this.velY < 0) {
             this.velY = 0
@@ -216,10 +226,6 @@ export default class Player {
             this.velY = 0
             this.y = platform.y - this.height
         }
-        //console.log(this.grounded) //This gives true all the time
-
-
-        //console.log(rightBorderOverlap, leftBorderOverlap, botBorderOverlap, topBorderOverlap)
     }
 
     handleDownInput(input) {

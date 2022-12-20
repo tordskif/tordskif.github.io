@@ -22,7 +22,7 @@ export default class Game {
         this.scrollX = 0
         this.scrollY = 0
 
-        this.scale = 1
+        this.scale = 1/2
     }
 
     initializeCanvas() {
