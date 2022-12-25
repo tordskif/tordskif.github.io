@@ -43,9 +43,6 @@ export default class Camera {
         this.shiftDown = false
         this.spaceDown = false
         this.stepLength = 0.1
-
-        this.pointerLocked = false
-
         
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
@@ -58,13 +55,12 @@ export default class Camera {
         window.addEventListener('mousemove', this.handleMouseMove)
 
         canvas.onclick = () => {
-            if(this.pointerLocked) {
+            if(document.pointerLockElement === this.canvas) { //Pointer is locked, then exit
                 document.exitPointerLock()
-                this.pointerLocked = false
-            } else {
+            } else { //Else enable lock
                 this.canvas.requestPointerLock()
-                this.pointerLocked = true
             }
+            //make mouse have to be locked for movement to work. also make escape set locked to false
         }
 
         this.mainLoop()
@@ -158,6 +154,10 @@ export default class Camera {
     }
 
     handleMouseMove(e) {
+        let mouseLocked = (document.pointerLockElement === this.canvas) //True if mouse is locked to canvas
+        if(!mouseLocked) {
+            return
+        }
         this.v += -e.movementX/200
 
         //Make sure we dont move too far up/down on pitch

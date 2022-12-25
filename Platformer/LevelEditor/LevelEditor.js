@@ -20,6 +20,7 @@ let playerX = 50
 let playerY = 50
 let playerSquare = new Platform(50,50, 32, 48, "red")
 let textArea = document.getElementById("textArea")
+let scale = 1
 
 window.addEventListener("click", (e) => {
     let x = e.offsetX + scrollX
@@ -72,6 +73,10 @@ window.addEventListener("keydown", (e) => {
         render()
     }
     if(e.key === "b") {
+        //First change output depending on scale variable
+        //That is a todo change...
+
+        
         textArea.innerHTML = "const game = new Game("+playerX+","+ playerY+");"
         for (let i = 0; i < platformStrings.length; i++) {
             textArea.innerHTML += (platformStrings[i] + "\n")
@@ -103,6 +108,16 @@ function placePlayer() {
     playerSquare = new Platform(playerX, playerY, 32, 48, "red")
 }
 
+function scalePlatforms() {
+    let newPlatforms = []
+    for (let i = 0; i < platforms.length; i++) {
+        let platform = platforms[i];
+        let newPlatform = platform.scale(scale)
+        newPlatforms.push(newPlatform)
+    }
+    return newPlatforms
+}
+
 function render() {
     //Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -120,19 +135,19 @@ function render() {
 }
 
 function scrollRight() {
-    scrollX += 100
+    scrollX += 200
     render()
 }
 function scrollLeft() {
-    scrollX -= 100
+    scrollX -= 200
     render()
 }
 function scrollUp() {
-    scrollY -= 100
+    scrollY -= 200
     render()
 }
 function scrollDown() {
-    scrollY += 100
+    scrollY += 200
     render()
 }
 

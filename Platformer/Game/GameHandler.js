@@ -27,3 +27,8 @@ game.level.addPlatform(platform9);
 const platform10 = new Platform(-274,283,62,892,'red');
 game.level.addPlatform(platform10);
 game.start();
+
+
+
+//Maybe have different levels with different rules, like one where you can only wall jump, no normal jumps... etc. think only one level
+//

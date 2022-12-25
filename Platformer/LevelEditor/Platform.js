@@ -5,11 +5,15 @@ export default class Platform {
         this.width = width;
         this.height = height;
         this.color = color
-        this.scale = 1/4
     }
 
     render(context, scrollX, scrollY) {
         context.fillStyle = this.color;
-        context.fillRect((this.x - scrollX)*this.scale, (this.y - scrollY)*this.scale, (this.width)*this.scale, (this.height)*this.scale);
+        context.fillRect((this.x - scrollX), (this.y - scrollY), (this.width), (this.height));
+    }
+
+    scale(scale) {
+        let newPlatform = new Platform(this.x*scale, this.y*scale ,this.width*scale, this.height*scale, this.color)
+        return newPlatform
     }
 }

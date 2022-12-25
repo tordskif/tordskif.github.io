@@ -3,7 +3,7 @@ export default class WorldObject {
         //Polygons is a list of polygon objects
         this.polygons = []
         this.translationId = 0
-        this.maxTriangleLength = 2 //0.3 is basically the lowest i can go, it gets super laggy
+        this.maxTriangleLength = 1 //0.3 is basically the lowest i can go, it gets super laggy
     }
 
     translate(dx, dy, dz) {
@@ -23,7 +23,7 @@ export default class WorldObject {
                 this.addPolygon(piece)
             }
         } else { //Is a triangle, check if it has a long side:
-            let longestEdge = polygon.getLongestEdge()
+            let longestEdge = polygon.getLongestEdge() //Maybe do a center cut if the triangle is isoceles?
             if(longestEdge.getLength() > this.maxTriangleLength) {
                 let pieces = polygon.halfCut(longestEdge)
                 for(let i = 0; i < pieces.length; i++) {
