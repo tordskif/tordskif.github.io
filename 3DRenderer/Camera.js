@@ -218,6 +218,14 @@ export default class Camera {
             }
             flatObject.addPolygon(flatPolygon)
         }
+        for(let i = 0; i < worldObject.outlines.length; i++) {
+            let outline = worldObject.outlines[i]
+            let flatOutline = this.projectPolygon(outline)
+            if(flatOutline === undefined) {
+                continue
+            }
+            flatObject.addOutline(flatOutline)
+        }
         return flatObject
     }
 
@@ -230,6 +238,9 @@ export default class Camera {
                 return undefined
             }
             flatPolygon.addVertex(flatVertex)
+        }
+        if(polygon.justOutline) {
+            flatPolygon.justOutline = true
         }
         return flatPolygon
     }
@@ -259,7 +270,9 @@ export default class Camera {
 
         let canvasX = this.canvas.width/2 + screenY/(this.width)*this.canvas.width
         let canvasY = this.canvas.height/2 - screenZ/(this.height)*this.canvas.height
-        let depth = x
+
+        let totalDist = Math.sqrt(x*x+y*y+z*z)
+        let depth = totalDist //Was just x previously
 
         let flatVertex = new FlatVertex(canvasX, canvasY, depth)
         return flatVertex
@@ -290,7 +303,17 @@ export default class Camera {
 
         let polygonList = []
         flatScene.addToList(polygonList)
-        polygonList.sort((a, b) => (a.getAverageDepth() < b.getAverageDepth()) ? 1 : -1)
+        //polygonList.sort((a, b) => (a === b)? 0 : a? -1 : 1)
+        polygonList.sort(function(a, b) {
+            if(a.getAverageDepth() < b.getAverageDepth()) {
+                return 1
+            } else if(a.getAverageDepth() > b.getAverageDepth()) {
+                return -1
+            } else if(a.justOutline && !b.justOutline) {//Both are same depth, sort by outline or not
+                return -1
+            } else return 1
+        })
+       // polygonList.sort((a,b) => (a.getAverageDepth() < b.getAverageDepth()) ? 1 : -1 || (a.justOutline === b.justOutline)? 0 : a.justOutline? 1 : -1)
         
         let context = this.canvas.getContext("2d")
         
@@ -306,4 +329,5 @@ export default class Camera {
     //How to give rendering priority? If every time something is projected, it keeps track of the distance it took
     //What is a good measurement of distance here? 
     //Then when rendering the flat scenes, render the closest things last. That is sort objects before rendering by this property..
+    //Not that depth sorting uses the camera x distance, if it isntead used the abosolute distance from camera, it would be independent from angle of camera
 }

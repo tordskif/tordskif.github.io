@@ -2,6 +2,7 @@ export default class WorldObject {
     constructor() {
         //Polygons is a list of polygon objects
         this.polygons = []
+        this.outlines = []
         this.translationId = 0
         this.maxTriangleLength = 1 //0.3 is basically the lowest i can go, it gets super laggy
     }
@@ -14,7 +15,11 @@ export default class WorldObject {
         this.translationId += 1
     }
 
-    addPolygon(polygon) {
+    addPolygon(polygon, isInitialCall = false) {
+        if(isInitialCall) {
+            let outline = polygon.getOutline() //
+            this.addPolygonOutline(outline) //Add polygon anyways so we can draw the outline
+        }
         //Check if polygon is too large, if so, recursively cut it up into triangles untill it is small enough
         if(polygon.vertecies.length > 3) { //if not a triangle, cut it into triangles using centercut
             let pieces = polygon.centerCut()
@@ -34,5 +39,9 @@ export default class WorldObject {
                 this.polygons.push(polygon)
             }
         }
+    }
+
+    addPolygonOutline(polygon) {
+        this.outlines.push(polygon)
     }
 }

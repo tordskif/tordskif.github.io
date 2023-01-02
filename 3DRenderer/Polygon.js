@@ -2,11 +2,12 @@ import Vertex from "./Vertex.js"
 import Edge from "./Edge.js"
 
 export default class Polygon {
-    constructor(lineWidth = 5, color = "cyan") {
+    constructor(lineWidth = 5, color = "cyan", justOutline = false) {
         //vertecies is a list of vertex objects, which all lie in a plane
         this.vertecies = []
         this.lineWidth = lineWidth
         this.color = color
+        this.justOutline = justOutline
     }
 
     translate(dx, dy, dz, id) {
@@ -162,5 +163,12 @@ export default class Polygon {
         triangle2.addVertex(finalVertex)
         let triangles = [triangle1, triangle2]
         return triangles
+    }
+
+    getOutline() { //Return a new object, with same vertecies as this, but isOutline true
+        let outline = new Polygon()
+        outline.vertecies = this.vertecies
+        outline.justOutline = true
+        return outline
     }
 }

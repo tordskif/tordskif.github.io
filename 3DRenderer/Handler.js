@@ -191,7 +191,7 @@ function handleEdgeMatrix(matrix, edgeCount, aValue = 0, bValue = 0, cValue = 0,
             let newVertex = new Vertex(x,y,z)
             newPolygon.addVertex(newVertex)
             if(newPolygon.vertecies.length === edgeCount) { //The polygon has enough edges
-                newWorldObject.addPolygon(newPolygon)
+                newWorldObject.addPolygon(newPolygon, true)
                 newPolygon = undefined
             }
             x = undefined

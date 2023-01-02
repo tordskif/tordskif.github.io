@@ -4,6 +4,7 @@ export default class FlatPolygon {
         this.vertecies = []
         this.lineWidth = lineWidth
         this.color = color
+        this.justOutline = false
     }
     
     translate(dx, dy) {
@@ -25,10 +26,15 @@ export default class FlatPolygon {
             context.lineTo(vertex.x, vertex.y)
         }
         context.closePath()
-        context.lineWidth = this.lineWidth
+        context.lineWidth = 1
         context.strokeStyle = "black"
-        context.stroke()
-        context.fill()
+        if(this.justOutline) {
+            //context.stroke()
+            //context.fill()
+        } else {  
+            context.stroke()  
+            context.fill()
+        }
         //Addsome way to draw the "true" outline border, and not all the interior triangles...
     }
 
