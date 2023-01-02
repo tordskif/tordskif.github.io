@@ -143,7 +143,7 @@ export default class Game {
             if(this.player.y < this.maxAchievedHeight) { //Update scoring
                 this.maxAchievedHeight = this.player.y
             }
-            this.score.innerHTML = Math.floor(-this.maxAchievedHeight/this.scale)/10
+            this.score.innerHTML = "Score: " + Math.floor(-this.maxAchievedHeight/this.scale)/10
         }
 
         //Check if player is too far up/down/left/right, move scroll
