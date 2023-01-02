@@ -17,6 +17,7 @@ function function2() {
     Platform color: QWE<br>
     Movement: Arrow keys<br>
     Place player: P<br>
+    Undo: Z <br>
     Get code snippet for level: B
     `
     helpText.style.visibility = "visible"
