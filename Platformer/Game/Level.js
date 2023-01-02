@@ -16,7 +16,7 @@ export default class Level {
 
     update() {
         for (const platform of this.platforms) {
-            //platform.update();
+            platform.update();
         }
 
         /*for (const enemy of this.enemies) {

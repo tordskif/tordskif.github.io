@@ -24,28 +24,11 @@ function function2() {
 }
 
 function function3() {
-    helpText.innerHTML = `This is a basic skeleton for a platformer game, with some experimental physics elements, including friction, wall jumps and momentum direction conversion. 
-    <br>
-    <br>
-    Controls: Arrow keys
-    `
+    helpText.innerHTML = `Some projects based on an implementation of a basic platforming engine`
     helpText.style.visibility = "visible"
 }
 
 function function4() {
-    helpText.innerHTML = `This is a simple level creator for the above platforming game. Gives out code which can be pasted into platforming game file.
-    <br>
-    <br>
-    Controls:<br>
-    Platform color: QWE<br>
-    Movement: Arrow keys<br>
-    Place player: P<br>
-    Get code snippet for level: B
-    `
-    helpText.style.visibility = "visible"
-}
-
-function function5() {
     helpText.innerHTML = `This is an implementation of Tetris, with some experimental powerups added. Clear lines with powerup blocks to be able to deploy them later.
     <br>
     <br>
@@ -55,6 +38,20 @@ function function5() {
     Shift piece: Shift<br>
     Deploy Bomb: Q<br>
     Slow time: W
+    `
+    
+    helpText.style.visibility = "visible"
+}
+
+function function5() {
+    helpText.innerHTML = `This is a simple level creator for the above platforming game. Gives out code which can be pasted into platforming game file.
+    <br>
+    <br>
+    Controls:<br>
+    Platform color: QWE<br>
+    Movement: Arrow keys<br>
+    Place player: P<br>
+    Get code snippet for level: B
     `
     helpText.style.visibility = "visible"
 }

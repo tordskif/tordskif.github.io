@@ -35,8 +35,34 @@ function setup() {
     turnText.innerHTML = "Your turn"
 
     //Regexes used to determine if a certain board state is a win/loss
-    let redwintest = /1(\d{7,7}1){3,3}|1(\d{6,6}1){3,3}|1(\d{5,5}1){3,3}|1111/
-    let yellowwintest = /2(\d{7,7}2){3,3}|2(\d{6,6}2){3,3}|2(\d{5,5}2){3,3}|2222/
+    let redwintest = /1(\d{7}1){3}|1(\d{6}1){3}|1(\d{5}1){3}|1111/
+    let yellowwintest = /2(\d{7}2){3}|2(\d{6}2){3}|2(\d{5}2){3}|2222/
+
+    //Want it to be similar to the above, but instead needing only 3 in a row, with a 0 on either side. Look for following patterns:
+    /**
+     * (1\d{7}){3}0  Right up, zero on top right
+     * 0(\d{7}1){3}  Right down, zero on bottom left
+     * (1\d{6}){3}0  Horizontal, zero on right
+     * 0(\d{6}1){3}  Horizontal, zero on left
+     * (1\d{5}){3}0  Left up, zero on bot right
+     * 0(\d{5}1){3}  Left down, zero on top left
+     * 1110          Vertical, 0 on top
+     * 0111          Vertical, 0 on bottom (never happens)
+     * 
+     * //Also need the ones where the empty spot is in the middle somewhere, like 1\d{5}1\d{5}0\d{5}1
+     * (1\d{7}){2}0\d{7}1  Right up, zero top middle
+     * 1\d{7}0(\d{7}1){2}  Right down, zero bot middle
+     * (1\d{6}){2}0\d{6}1  Horizontal, zero on right
+     * 1\d{6}0(\d{6}1){2}   Horizontal, zero on left
+     * (1\d{5}){2}0\d{5}1  Left up, zero on bot right
+     * 1\d{5}0(\d{5}1){2} Left down, zero on top left
+     * 1101          Vertical, 0 on top middle (never happens)
+     * 1011          Vertical, 0 on bottom middle (never happens)
+     */
+    /*
+    let redthreetest = /(1\d{7}){3}0|0(\d{7}1){3}|(1\d{6}){3}0|0(\d{6}1){3}|(1\d{5}){3}0|0(\d{5}1){3}|1110|(1\d{7}){2}0\d{7}1|1\d{7}0(\d{7}1){2}|(1\d{6}){2}0\d{6}1|1\d{6}0(\d{6}1){2}|(1\d{5}){2}0\d{5}1|1\d{5}0(\d{5}1){2}/g
+    let yellowthreetest = /(2\d{7}){3}0|0(\d{7}2){3}|(2\d{6}){3}0|0(\d{6}2){3}|(2\d{5}){3}0|0(\d{5}2){3}|2220|(2\d{7}){2}0\d{7}2|2\d{7}0(\d{7}2){2}|(2\d{6}){2}0\d{6}2|2\d{6}0(\d{6}2){2}|(2\d{5}){2}0\d{5}2|2\d{5}0(\d{5}2){2}/g
+    */
 
     //Generating the 7x6 board of divs
     function generateBoard() {
@@ -140,7 +166,6 @@ function setup() {
                 }
             }
         }
-        //console.log(gameBoard)
     }
 
     //Update visuals and gamestate after a player has won
@@ -261,9 +286,13 @@ function setup() {
             return 1
         }
         //If we meet a set max recursion depth, just return 0 
-        if (recursionDepth >= 9) {
+        if (recursionDepth >= 7) {
             //Return some heuristic score, make new file with these changes
-            return 0
+            //Heuristic can be number of winning moves for yellow, minus number of winning moves for red, regardless of whoose turn it is..
+            //Or like, number of moves yellow can make which end in a loss for yellow, vs number of moves red can make which end in a loss for red...
+            //Or some measure of number of moves which does NOT lose instantly, for each player...
+            //Will need to have a sort of 2 steps deep logic to do this..., but should be ok to do. Reduce main max recursion depth to compensate
+            return deepEvaluation(gameBoard)
         }
         let nextTurn;
         if (turn === 1) {
@@ -331,10 +360,13 @@ function setup() {
             if (turn === 1) {
                 let worstOutcome = 1
                 let fullRows = 0
+                let average = 0
                 for (let i = 0; i < 7; i++) {
                     if (moveList[i] === 2) { //Dont count full columns as bad moves.. or maybe i should?
                         fullRows += 1
+                        continue
                     }
+                    average += moveList[i]
                     if (moveList[i] <= worstOutcome) {
                         worstOutcome = moveList[i]
                     }
@@ -342,33 +374,39 @@ function setup() {
                 if (fullRows === 7) {
                     return 0
                 }
+                if(Math.abs(worstOutcome) < 0.1 && recursionDepth >= 3) { //Not critical, instead return average
+                    return average/(7-fullRows)
+                } 
+
                 return worstOutcome * depthFactor //Include the depth factor, makes it live longest before losing
             }
 
             if (turn === 2) {
-                let averageValue = 0
+                let worstOutcome = -1
                 let fullRows = 0
+                let average = 0
                 for (let i = 0; i < 7; i++) {
-                    if(moveList[i] >= 0.9) { //Means they can pick a near won state, hence this state is good
-                        return 1*depthFactor //Depthfactor ensures they chose an earlier win if they have multiple possible ones available
-                    }
                     if(moveList[i] === -2) { //Means the row is full
                         fullRows += 1
-                    } else {
-                        averageValue += moveList[i]
+                        continue
+                    }
+                    average += moveList[i]
+                    if (moveList[i] >= worstOutcome) {
+                        worstOutcome = moveList[i]
                     }
                 }
                 if(fullRows === 7) { //This means there are no legal moves, drawn position, return 0
                     return 0
                 }
-                return averageValue/(7-fullRows) //Obtain average of rows which are not full
+                if(Math.abs(worstOutcome) < 0.1 && recursionDepth >= 3) { //Not critical, instead return average
+                    //Returning average is not really that smart. Say there is one forced move. Then the worst outcome is prolly around 0, but average is around 6/7
+                    //Because 6 possibilites are winning... really cant rely on this... Maybe if depth > 3 as well, so that its not too obvious?
+                    return average/(7-fullRows)
+                    //Maybe also check that average is not too large? Really dont want it to change the behaviour TOO much, just nudge in the right direction if it really doesnt know...
+                } 
+                return worstOutcome * depthFactor 
             }
-            //console.log(averageValue, recursionDepth)
-            //return averageValue //if not at depth 0, just return the value
-
-            //Need to do a systematic algorithm here, minimizing certain losses, while maximizing the chances for going into big wins.
         }
-
     }
 
     function AIPick() {
@@ -393,6 +431,84 @@ function setup() {
             numberFields[i].innerHTML = Math.round((placementList[i] + Number.EPSILON)*100)/100;
         }
     }
+
+    function deepEvaluation(gameBoard) {
+        let redCount = findRedThreeInARow(gameBoard)
+        let yellowCount = findYellowThreeInARow(gameBoard)
+        let difference = yellowCount-redCount
+        return difference/10000
+    }
+    // Need some better heuristic, which gives more neuanced evaluation to different types of boards. Currently its way too much 0, meaning it doesnt really know the difference between moves, and then suddenly its in a losing position....
+    // Maybe instead simply count the number of red/yellow 3 in a rows, which can be completed in a 4rth spot, and base heuristic on this?
+    //Create regex for this.
+    //Here is how to count number of matches for a regex:
+    //https://stackoverflow.com/questions/1072765/count-number-of-matches-of-a-regex-in-javascript
+
+    function findRedThreeInARow(gameBoard) {
+        let count = 0
+        //Do each regex separately, to catch potential overlaps
+        //There can still be potential overlaps, if there are two of the same type... but to be honest, we only care about the first one of these most of the time
+        let regex
+        regex = /(1\d{7}){3}0/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /0(\d{7}1){3}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(1\d{6}){3}0/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /0(\d{6}1){3}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(1\d{5}){3}0/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /0(\d{5}1){3}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /1110/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(1\d{7}){2}0\d{7}1/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /1\d{7}0(\d{7}1){2}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(1\d{6}){2}0\d{6}1/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /1\d{6}0(\d{6}1){2}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(1\d{5}){2}0\d{5}1/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /1\d{5}0(\d{5}1){2}/g
+        return count
+    }
+
+    function findYellowThreeInARow(gameBoard) {
+        let count = 0
+        //Do each regex separately, to catch potential overlaps
+        let regex
+        regex = /(2\d{7}){3}0/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /0(\d{7}2){3}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(2\d{6}){3}0/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /0(\d{6}2){3}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(2\d{5}){3}0/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /0(\d{5}2){3}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /2220/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(2\d{7}){2}0\d{7}2/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /2\d{7}0(\d{7}2){2}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(2\d{6}){2}0\d{6}2/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /2\d{6}0(\d{6}2){2}/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /(2\d{5}){2}0\d{5}2/g
+        count += ((gameBoard || '').match(regex) || []).length
+        regex = /2\d{5}0(\d{5}2){2}/g
+        return count
+    }
+
     generateBoard();
 }
 

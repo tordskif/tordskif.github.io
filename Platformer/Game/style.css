@@ -2,3 +2,19 @@
     border: solid;
     border-color: black;
 }
+
+#score {
+    position: absolute;
+    width: 200px;
+    height: 50px;
+}
+
+#endScreen {
+    position: absolute;
+    text-align: center;
+    width: 400px;
+    height: 200px;
+    font-size: 40px;
+    top: 300px;
+    left: 600px;
+}

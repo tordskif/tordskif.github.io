@@ -77,7 +77,7 @@ window.addEventListener("keydown", (e) => {
         //That is a todo change...
 
         
-        textArea.innerHTML = "const game = new Game("+playerX+","+ playerY+");"
+        textArea.innerHTML = "const game = new Game("+playerX+","+ playerY+");" + "\n"
         for (let i = 0; i < platformStrings.length; i++) {
             textArea.innerHTML += (platformStrings[i] + "\n")
         }

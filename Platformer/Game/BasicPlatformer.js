@@ -4,7 +4,8 @@ import Level from "./Level.js"
 import Game from "./Game.js"
 
 
-const game = new Game(110,530);const platform0 = new Platform(23,603,1474,49,'blue');
+const game = new Game(110,530);
+const platform0 = new Platform(23,603,1474,49,'blue');
 game.level.addPlatform(platform0);
 const platform1 = new Platform(1495,603,1002,49,'blue');
 game.level.addPlatform(platform1);
