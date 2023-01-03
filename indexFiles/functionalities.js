@@ -1,7 +1,7 @@
 let helpText = document.getElementById("helpText")
 
 function function1() {
-    helpText.innerHTML = `This is an attempt at rendering a 3D scene from the perspective of a movable "camera", using only a 2D canvas and some math. 
+    helpText.innerHTML = `This is an attempt at basic rendering of a 3D scene from the perspective of a movable "camera", using a 2D canvas and a perspective projection. 
     <br>
     <br>
     Controls: <br>
@@ -14,7 +14,7 @@ function function1() {
 
 function function2() {
     helpText.innerHTML = `This is an implementation of the game "Connect Four" where you play against the computer. 
-    The computer uses an algorithm based on the minimax concept, to determine its next move. 
+    The computer uses an algorithm based on the minimax concept, to determine its best next move. 
     <br>
     <br>
     Controls: <br>
@@ -40,18 +40,5 @@ function function4() {
     Slow time: W
     `
     
-    helpText.style.visibility = "visible"
-}
-
-function function5() {
-    helpText.innerHTML = `This is a simple level creator for the above platforming game. Gives out code which can be pasted into platforming game file.
-    <br>
-    <br>
-    Controls:<br>
-    Platform color: QWE<br>
-    Movement: Arrow keys<br>
-    Place player: P<br>
-    Get code snippet for level: B
-    `
     helpText.style.visibility = "visible"
 }
