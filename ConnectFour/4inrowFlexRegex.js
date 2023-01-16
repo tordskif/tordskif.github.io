@@ -88,7 +88,8 @@ function setup() {
             return;
         }
         //Decide what HTML element was clicked on
-        let column = e.path[0].id.split(" ")[0];
+        console.log(e.target)
+        let column = e.target.id.split(" ")[0];
         //If you didnt click on the board, do nothing
         if (column === "main") {
             return;
