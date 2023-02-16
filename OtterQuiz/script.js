@@ -1,13 +1,17 @@
 import QuizQuestion from "./modules/QuizQuestion.js"
+import data from "./modules/Questions.json" assert { type: "json" }
+console.log(data)
 
 
 let q1 = new QuizQuestion("TallShakingPresidentDuDudu-EydbJXbRqN0YNc2C", ["Taz", "Mak"], true)
-
 let q2 = new QuizQuestion("SmellyAdventurousDisc4Head-P3F0N00hryWHpAzb", ["Taz", "Hardy"], true)
-
 let q3 = new QuizQuestion("1040978827", ["Katmai"], false)
 
-let list = [q1,q2,q3]
+let list = data //Since we write it in json, the data already has the format we want, and is inside a list.
+//Seems we dont really have to do any transformations to it...
+
+//Method for reading txt file, and creating appropriate QuizQuestion objects, and putting them in a list
+
 
 document.getElementById("testButton").addEventListener("click", setRandomVideo)
 
@@ -31,5 +35,15 @@ function setVideo(quizQuestion) { //Take in quiz question, set appropriate video
 
 
     console.log(videoPlayer)
+    console.log(data.length)
+    console.log(data[1])
     videoPlayer.src = srcString
 }
+
+
+/**
+"TallShakingPresidentDuDudu-EydbJXbRqN0YNc2C", ["Taz", "Mak"], true
+"SmellyAdventurousDisc4Head-P3F0N00hryWHpAzb", ["Taz", "Hardy"], true
+"1040978827", ["Katmai"], false
+
+*/
